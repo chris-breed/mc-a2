@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -27,6 +29,7 @@ public class GameMainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     TextView goalText;
+    int[] numbersReceived;
 
     public GameMainFragment() {
         // Required empty public constructor
@@ -46,25 +49,41 @@ public class GameMainFragment extends Fragment {
 
         goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
 
-        NumbersGame numbersGameController = new NumbersGame(1000, 50); // min/max for the goal number
-        numbersGameController.start(); // Buttons on screen for selecting big and small ones
-        goalText.setText(numbersGameController.getGoalNumber());
+        Countdown countdownController = new Countdown(1000, 50); // min/max for the goal number
+        countdownController.start(); // Just gets a random number TODO: for now
+        goalText.setText(String.format("%d", countdownController.getGoalNumber()));
 
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            numbersReceived = Objects.requireNonNull(bundle).getIntArray("FromMainActivityToMainPlayFragment");
+            Log.i("Game", Arrays.toString(numbersReceived) + ", From MainFragment.");
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false);
+
+
+        return inflater.inflate(R.layout.fragment_game_main, container, false);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
 
-
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
 
     }
 

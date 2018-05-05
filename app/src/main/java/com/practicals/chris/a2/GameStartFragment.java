@@ -56,6 +56,9 @@ public class GameStartFragment extends Fragment {
     private int bigMin = 10;
     private int bigMax = 100;
 
+    TextView goalText;
+    int[] numbersReceived;
+
     public GameStartFragment() {
         // Required empty public constructor
     }
@@ -97,14 +100,14 @@ public class GameStartFragment extends Fragment {
         bigNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewValue(getNewBigNumber());
+                addNewValue(getNewNumber(bigMin, bigMax));
             }
         });
         smallNumberButton = getView().findViewById(R.id.smallButton);
         smallNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addNewValue(getNewSmallNumber());
+                addNewValue(getNewNumber(smallMin, smallMax));
             }
         });
 
@@ -115,6 +118,19 @@ public class GameStartFragment extends Fragment {
         numberTextViews.add(number_5);
         numberTextViews.add(number_6);
         numberTextViews.add(number_7);
+
+        goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
+
+        Countdown countdownController = new Countdown(1000, 50); // min/max for the goal number
+        countdownController.start(); // Just gets a random number TODO: for now
+        goalText.setText(String.format("%d", countdownController.getGoalNumber()));
+
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            numbersReceived = Objects.requireNonNull(bundle).getIntArray("FromMainActivityToMainPlayFragment");
+            Log.i("Game", Arrays.toString(numbersReceived) + ", From MainFragment.");
+        }
     }
 
     @Override
@@ -163,23 +179,17 @@ public class GameStartFragment extends Fragment {
             }
 
             Log.i("Game", Arrays.toString(valuesToBePassed));
-            Intent intent = new Intent();
-            intent.putExtra("NewValues", valuesToBePassed);
+            Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), MainActivity.class);
+            intent.putExtra("FromStartToMain", valuesToBePassed); // Values are passed to the GameMainFragment
+            getActivity().startActivity(intent);
+
         }
     }
 
-    private int getNewBigNumber() {
+    private int getNewNumber(int min, int max) {
         int number = 0;
         while (number <= 0) {
-            number = rand.nextInt(bigMax) - bigMin;
-        }
-        return number;
-    }
-
-    private int getNewSmallNumber() {
-        int number = 0;
-        while (number <= 0) {
-            number = rand.nextInt(smallMax) - smallMin;
+            number = rand.nextInt(max) + min;
         }
         return number;
     }

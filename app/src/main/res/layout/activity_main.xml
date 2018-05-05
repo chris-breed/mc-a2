@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_game" />
+        tools:layout="@layout/fragment_game_main"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

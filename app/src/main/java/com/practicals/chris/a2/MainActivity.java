@@ -5,17 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements GameMainFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, HighScoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener {
+import java.util.Arrays;
+
+public class MainActivity extends FragmentActivity implements GameMainFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, HighScoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment mainFragmentContainer;
 
-    Fragment gameFragment = new GameMainFragment();
+    Fragment gamePlayFragment = new GamePlayFragment();
     Fragment settingsFragment = new SettingsFragment();
     Fragment highScoresFragment = new HighScoresFragment();
 
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements GameMainFragment.
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_game:
-                    replaceFragment(gameFragment);
+                    replaceFragment(gamePlayFragment);
                     return true;
                 case R.id.nav_settings:
                     replaceFragment(settingsFragment);
@@ -49,6 +52,26 @@ public class MainActivity extends AppCompatActivity implements GameMainFragment.
 
         mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
 
+        Bundle bundle = getIntent().getExtras();
+
+        int[] newValues;
+
+        // Bundle from Game Start fragment, should contain the 7 random big/small values
+        if (bundle != null) {
+//        assert bundle != null;
+            newValues = bundle.getIntArray("FromStartToMain");
+            Log.i("Game", Arrays.toString(newValues) + ", from Intent.");
+
+            Bundle gamePlayIntent = new Bundle();
+            gamePlayIntent.putIntArray("FromMainActivityToMainPlayFragment", newValues);
+
+            GamePlayFragment newGamePlayFragment = new GamePlayFragment();
+            newGamePlayFragment.setArguments(gamePlayIntent); // When GameMainFragment is opened, check the bundle for this, then swap its fragment with the Play fragment
+            replaceFragment(newGamePlayFragment);
+        } else {
+            Log.i("Game", "Bundle from StartFragment is empty");
+            assert bundle != null;
+        }
     }
 
     @Override
@@ -59,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements GameMainFragment.
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainFragmentContainer, fragment, fragment.toString());
-        fragmentTransaction.addToBackStack(fragment.toString());
+//        fragmentTransaction.addToBackStack(fragment.toString());
         fragmentTransaction.commit();
     }
 }

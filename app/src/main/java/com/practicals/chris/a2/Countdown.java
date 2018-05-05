@@ -3,7 +3,7 @@ package com.practicals.chris.a2;
 import java.util.ArrayList;
 import java.util.Random;
 
-class NumbersGame {
+class Countdown {
 
     private int max;
     private int min;
@@ -12,16 +12,16 @@ class NumbersGame {
     int goalNumber;
 
 
-
     private ArrayList<Integer> baseNumbers;
 
     // Constructor
-    NumbersGame(int max, int min) {
+    Countdown(int max, int min) {
         this.max = max;
         this.min = min;
 
         this.rand = new Random();
     }
+
 
     void start() {
         baseNumbers = new ArrayList<>();
@@ -32,8 +32,8 @@ class NumbersGame {
         baseNumbers.add(generatedNumber);
     }
 
-    String getGoalNumber() {
-        return "" + goalNumber;
+    int getGoalNumber() {
+        return goalNumber;
     }
 
 

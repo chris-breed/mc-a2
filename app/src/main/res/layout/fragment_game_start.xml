@@ -7,6 +7,20 @@
     android:orientation="vertical"
     tools:context=".GameStartFragment">
 
+    <TextView
+        android:id="@+id/goalText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/default_value"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

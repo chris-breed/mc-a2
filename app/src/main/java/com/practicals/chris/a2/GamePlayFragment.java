@@ -3,15 +3,35 @@ package com.practicals.chris.a2;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 
 public class GamePlayFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+
+    int[] numbers;
+
+    Button playButton1;
+    Button playButton2;
+    Button playButton3;
+    Button playButton4;
+    Button playButton5;
+    Button playButton6;
+    Button playButton7;
+
+    ArrayList<Button> buttonArrayList = new ArrayList<>();
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -33,7 +53,35 @@ public class GamePlayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        numbers = Objects.requireNonNull(getArguments()).getIntArray("FromMainToPlay");
+
         return inflater.inflate(R.layout.fragment_game_play, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.i("Game", Arrays.toString(numbers) + ", From PlayFragment.");
+
+        playButton1 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_1);
+        playButton2 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_2);
+        playButton3 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_3);
+        playButton4 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_4);
+        playButton5 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_5);
+        playButton6 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_6);
+        playButton7 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_7);
+
+        buttonArrayList.add(playButton1);
+        buttonArrayList.add(playButton2);
+        buttonArrayList.add(playButton3);
+        buttonArrayList.add(playButton4);
+        buttonArrayList.add(playButton5);
+        buttonArrayList.add(playButton6);
+        buttonArrayList.add(playButton7);
+
+        for (int i = 0; i < buttonArrayList.size(); i++) {
+            buttonArrayList.get(i).setText(String.valueOf(numbers[i]));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
