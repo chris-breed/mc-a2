@@ -10,10 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
-import java.util.Arrays;
+import java.util.Objects;
 
-public class MainActivity extends FragmentActivity implements GameMainFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener, HighScoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighScoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment mainFragmentContainer;
@@ -21,6 +22,9 @@ public class MainActivity extends FragmentActivity implements GameMainFragment.O
     Fragment gamePlayFragment = new GamePlayFragment();
     Fragment settingsFragment = new SettingsFragment();
     Fragment highScoresFragment = new HighScoresFragment();
+
+
+    Bundle bundleToPass = new Bundle();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,30 +51,34 @@ public class MainActivity extends FragmentActivity implements GameMainFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set up
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
 
-        Bundle bundle = getIntent().getExtras();
 
-        int[] newValues;
+        // Get data from StartFragment
+        Bundle fromStart = getIntent().getExtras();
+        Boolean fromStartBoolResult = false;
 
-        // Bundle from Game Start fragment, should contain the 7 random big/small values
-        if (bundle != null) {
-//        assert bundle != null;
-            newValues = bundle.getIntArray("FromStartToMain");
-            Log.i("Game", Arrays.toString(newValues) + ", from Intent.");
+        Log.i("Game", "Value of fromStart. Should be null when first run.\nIs: " + String.valueOf(fromStart));
 
-            Bundle gamePlayIntent = new Bundle();
-            gamePlayIntent.putIntArray("FromMainActivityToMainPlayFragment", newValues);
+        if (fromStart != null && !fromStart.isEmpty()) {
+            Log.i("Game", "FromStart contains values.\nPreparing GamePlayFragment.");
+            fromStartBoolResult = Objects.requireNonNull(fromStart).getBoolean("FromStart");
 
-            GamePlayFragment newGamePlayFragment = new GamePlayFragment();
-            newGamePlayFragment.setArguments(gamePlayIntent); // When GameMainFragment is opened, check the bundle for this, then swap its fragment with the Play fragment
-            replaceFragment(newGamePlayFragment);
-        } else {
-            Log.i("Game", "Bundle from StartFragment is empty");
-            assert bundle != null;
+            if (fromStartBoolResult.equals(true)) {
+                // Bundle up values and start GamePlayFragment
+                Log.i("Game", "Beginning GamePlayFragment replacement.");
+                Log.i("Game", "FromStart Bundle contains: " + fromStart);
+                // Send data to PlayFragment
+
+                Log.i("Game", "Bundling data and replacing mainFragmentContainer");
+                bundleToPass.clear();
+                bundleToPass.putAll(fromStart);
+                GamePlayFragment gamePlayFragment = new GamePlayFragment();
+                replaceFragment(gamePlayFragment);
+            }
         }
     }
 
@@ -79,10 +87,11 @@ public class MainActivity extends FragmentActivity implements GameMainFragment.O
 
     }
 
-    public void replaceFragment(Fragment fragment) {
+    // Used for the navigation mostly
+    public void replaceFragment(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.mainFragmentContainer, fragment, fragment.toString());
-//        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.replace(R.id.mainFragmentContainer, newFragment, newFragment.toString());
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 }

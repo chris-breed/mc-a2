@@ -9,14 +9,14 @@
 
     <fragment
         android:id="@+id/mainFragmentContainer"
-        android:name="com.practicals.chris.a2.GameMainFragment"
+        android:name="com.practicals.chris.a2.GameStartFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_game_main"/>
+        tools:layout="@layout/fragment_game_start" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

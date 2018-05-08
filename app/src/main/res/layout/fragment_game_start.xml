@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     android:orientation="vertical"
     tools:context=".GameStartFragment">
 
     <TextView
-        android:id="@+id/goalText"
+        android:id="@+id/playGoalText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/default_value"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -48,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -57,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -66,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -84,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
@@ -93,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0"
+                android:text="@string/default_value"
                 android:textAlignment="center"
                 android:textSize="30sp" />
         </LinearLayout>

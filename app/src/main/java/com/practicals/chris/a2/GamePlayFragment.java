@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +20,8 @@ import java.util.Objects;
 
 public class GamePlayFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
-    int[] numbers;
-
+    int goalNumber;
+    int[] newValues;
     Button playButton1;
     Button playButton2;
     Button playButton3;
@@ -30,16 +29,20 @@ public class GamePlayFragment extends Fragment {
     Button playButton5;
     Button playButton6;
     Button playButton7;
-
     ArrayList<Button> buttonArrayList = new ArrayList<>();
+    private OnFragmentInteractionListener mListener;
 
     public GamePlayFragment() {
         // Required empty public constructor
     }
 
-    public static GamePlayFragment newInstance(String param1, String param2) {
+    public static GamePlayFragment newInstance(Bundle bundle) {
         GamePlayFragment fragment = new GamePlayFragment();
         Bundle args = new Bundle();
+
+        args.putInt("goal", bundle.getInt("goal"));
+        args.putIntArray("values", bundle.getIntArray("values"));
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,7 +56,6 @@ public class GamePlayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        numbers = Objects.requireNonNull(getArguments()).getIntArray("FromMainToPlay");
 
         return inflater.inflate(R.layout.fragment_game_play, container, false);
     }
@@ -61,7 +63,16 @@ public class GamePlayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i("Game", Arrays.toString(numbers) + ", From PlayFragment.");
+//        numbers = Objects.requireNonNull(getArguments()).getIntArray("FromMainActivityToMainPlayFragment");
+
+        Log.i("Game", "GamePlayFragment created.");
+
+        newValues = Objects.requireNonNull(getArguments()).getIntArray("values");
+        goalNumber = Objects.requireNonNull(getArguments()).getInt("goal");
+
+        Log.i("Game", Arrays.toString(newValues) + ", From PlayFragment.");
+
+        TextView goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
 
         playButton1 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_1);
         playButton2 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_2);
@@ -80,8 +91,9 @@ public class GamePlayFragment extends Fragment {
         buttonArrayList.add(playButton7);
 
         for (int i = 0; i < buttonArrayList.size(); i++) {
-            buttonArrayList.get(i).setText(String.valueOf(numbers[i]));
+            buttonArrayList.get(i).setText(String.valueOf(newValues[i]));
         }
+        goalText.setText(String.valueOf(goalNumber));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

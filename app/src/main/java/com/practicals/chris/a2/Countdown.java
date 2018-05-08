@@ -9,7 +9,7 @@ class Countdown {
     private int min;
     private Random rand;
 
-    int goalNumber;
+    private int goalNumber;
 
 
     private ArrayList<Integer> baseNumbers;
@@ -35,6 +35,4 @@ class Countdown {
     int getGoalNumber() {
         return goalNumber;
     }
-
-
 }

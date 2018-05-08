@@ -2,12 +2,13 @@ package com.practicals.chris.a2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,7 @@ import java.util.Random;
  */
 public class GameStartFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
-
+    public Random rand = new Random();
     int count = 0; // Keeps track of how many values are in the new arrayList
 
     TextView number_1;
@@ -48,16 +48,15 @@ public class GameStartFragment extends Fragment {
 
     ArrayList<TextView> numberTextViews;
     ArrayList<Integer> newValues = new ArrayList<>();
-    public Random rand = new Random();
-
+    TextView goalText;
+    int[] numbersReceived;
+    Countdown countdownController;
+    private OnFragmentInteractionListener mListener;
     // min/max for small/big number generation
     private int smallMin = 1;
     private int smallMax = 10;
     private int bigMin = 10;
     private int bigMax = 100;
-
-    TextView goalText;
-    int[] numbersReceived;
 
     public GameStartFragment() {
         // Required empty public constructor
@@ -86,6 +85,7 @@ public class GameStartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.i("Game", "GameStartFragment created.");
 
         numberTextViews = new ArrayList<>();
         number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
@@ -119,18 +119,63 @@ public class GameStartFragment extends Fragment {
         numberTextViews.add(number_6);
         numberTextViews.add(number_7);
 
-        goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
+        goalText = Objects.requireNonNull(getView()).findViewById(R.id.playGoalText);
 
-        Countdown countdownController = new Countdown(1000, 50); // min/max for the goal number
-        countdownController.start(); // Just gets a random number TODO: for now
-        goalText.setText(String.format("%d", countdownController.getGoalNumber()));
+        countdownController = new Countdown(1000, 50); // min/max for the goal number
+        countdownController.start();
+        goalText.setText(String.valueOf(countdownController.getGoalNumber()));
 
-        Bundle bundle = getArguments();
+    }
 
-        if (bundle != null) {
-            numbersReceived = Objects.requireNonNull(bundle).getIntArray("FromMainActivityToMainPlayFragment");
-            Log.i("Game", Arrays.toString(numbersReceived) + ", From MainFragment.");
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    void addNewValue(int valueToBeAdded) {
+        numberTextViews.get(count).setText(String.format("%d", valueToBeAdded));
+        count++;
+        newValues.add(valueToBeAdded);
+
+        if (count >= 7) {
+            moreThanSeven();
         }
+    }
+
+    // Runs when the newValues ArrayList has 7 values.
+    private void moreThanSeven() {
+        int[] valuesToBePassed = new int[7];
+        for (int i = 0; i < newValues.size(); i++) {
+            valuesToBePassed[i] = newValues.get(i);
+        }
+
+        // newValues ArrayList and the goalNumber int.
+        Numbers numbers = new Numbers(valuesToBePassed, countdownController.getGoalNumber());
+
+        Log.i("Game", "Goal Number: " + numbers.getGoalNumber() + ". Base numbers: " + Arrays.toString(numbers.getNumberArray()));
+//        Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), MainActivity.class)
+//                .putExtra("FromStart", true)
+//                .putExtra("newValues", numbers);
+//        getActivity().startActivity(intent);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("goal", numbers.getGoalNumber());
+        bundle.putIntArray("values", numbers.getNumberArray());
+
+        startNewPlayFragmentWithBundle(bundle);
+    }
+
+    void startNewPlayFragmentWithBundle(Bundle goalAndValues) {
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(((ViewGroup) (Objects.requireNonNull(getView()).getParent())).getId(),
+                GamePlayFragment.newInstance(goalAndValues));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private int getNewNumber(int min, int max) {
+        int number = 0;
+        while (number <= 0) {
+            number = rand.nextInt(max - min) + min;
+        }
+        return number;
     }
 
     @Override
@@ -165,32 +210,5 @@ public class GameStartFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    void addNewValue(int valueToBeAdded) {
-        numberTextViews.get(count).setText(String.format("%d", valueToBeAdded));
-        count++;
-        newValues.add(valueToBeAdded);
 
-
-        if (count >= 7) { // Close fragment and open the play fragment
-            int[] valuesToBePassed = new int[7];
-            for (int i = 0; i < newValues.size(); i++) {
-                valuesToBePassed[i] = newValues.get(i);
-            }
-
-            Log.i("Game", Arrays.toString(valuesToBePassed));
-            Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), MainActivity.class);
-            intent.putExtra("FromStartToMain", valuesToBePassed); // Values are passed to the GameMainFragment
-            getActivity().startActivity(intent);
-
-        }
-    }
-
-    private int getNewNumber(int min, int max) {
-        int number = 0;
-        while (number <= 0) {
-            number = rand.nextInt(max) + min;
-        }
-        return number;
-    }
 }
