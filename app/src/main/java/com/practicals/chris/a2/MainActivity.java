@@ -55,31 +55,6 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
-
-
-        // Get data from StartFragment
-        Bundle fromStart = getIntent().getExtras();
-        Boolean fromStartBoolResult = false;
-
-        Log.i("Game", "Value of fromStart. Should be null when first run.\nIs: " + String.valueOf(fromStart));
-
-        if (fromStart != null && !fromStart.isEmpty()) {
-            Log.i("Game", "FromStart contains values.\nPreparing GamePlayFragment.");
-            fromStartBoolResult = Objects.requireNonNull(fromStart).getBoolean("FromStart");
-
-            if (fromStartBoolResult.equals(true)) {
-                // Bundle up values and start GamePlayFragment
-                Log.i("Game", "Beginning GamePlayFragment replacement.");
-                Log.i("Game", "FromStart Bundle contains: " + fromStart);
-                // Send data to PlayFragment
-
-                Log.i("Game", "Bundling data and replacing mainFragmentContainer");
-                bundleToPass.clear();
-                bundleToPass.putAll(fromStart);
-                GamePlayFragment gamePlayFragment = new GamePlayFragment();
-                replaceFragment(gamePlayFragment);
-            }
-        }
     }
 
     @Override

@@ -149,10 +149,6 @@ public class GameStartFragment extends Fragment {
         Numbers numbers = new Numbers(valuesToBePassed, countdownController.getGoalNumber());
 
         Log.i("Game", "Goal Number: " + numbers.getGoalNumber() + ". Base numbers: " + Arrays.toString(numbers.getNumberArray()));
-//        Intent intent = new Intent(Objects.requireNonNull(getActivity()).getBaseContext(), MainActivity.class)
-//                .putExtra("FromStart", true)
-//                .putExtra("newValues", numbers);
-//        getActivity().startActivity(intent);
 
         Bundle bundle = new Bundle();
         bundle.putInt("goal", numbers.getGoalNumber());

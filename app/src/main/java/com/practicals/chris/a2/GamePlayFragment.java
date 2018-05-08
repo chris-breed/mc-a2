@@ -63,7 +63,6 @@ public class GamePlayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        numbers = Objects.requireNonNull(getArguments()).getIntArray("FromMainActivityToMainPlayFragment");
 
         Log.i("Game", "GamePlayFragment created.");
 
