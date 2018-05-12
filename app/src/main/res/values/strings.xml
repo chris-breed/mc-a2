@@ -12,4 +12,13 @@
     <string name="big_number_button">Big Number</string>
     <string name="small_number_button">Small Number</string>
     <string name="default_value">0</string>
+
+    <string name="button_text_subtraction">-</string>
+    <string name="button_text_addition">+</string>
+    <string name="button_text_multiplication">*</string>
+    <string name="button_text_division">/</string>
+    <string name="text_current_total">Current Total:</string>
+    <string name="text_high_scores">High Scores</string>
+    <string name="txt_date_time">Date/Time</string>
+    <string name="txt_score">Score</string>
 </resources>

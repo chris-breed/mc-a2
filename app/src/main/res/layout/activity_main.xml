@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/mainFragmentContainer"
         android:name="com.practicals.chris.a2.GameStartFragment"
         android:layout_width="0dp"

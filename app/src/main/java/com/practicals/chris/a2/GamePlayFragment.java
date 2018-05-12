@@ -93,6 +93,9 @@ public class GamePlayFragment extends Fragment {
             buttonArrayList.get(i).setText(String.valueOf(newValues[i]));
         }
         goalText.setText(String.valueOf(goalNumber));
+
+        // Setup button listeners
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

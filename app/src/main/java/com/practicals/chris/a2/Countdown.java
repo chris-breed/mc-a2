@@ -25,7 +25,7 @@ class Countdown {
 
     void start() {
         baseNumbers = new ArrayList<>();
-        goalNumber = rand.nextInt(max) - min; // Generates a random goal number between min and max values.
+        goalNumber = rand.nextInt(max - min) + max; // Generates a random goal number between min and max values.
     }
 
     void addToArray(int generatedNumber) {
