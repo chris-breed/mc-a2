@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 class Numbers implements Serializable {
 
-    int goalNumber;
-    int[] numberArray;
+    private final int goalNumber;
+    private final int[] numberArray;
 
     Numbers(int[] numbs, int goal) {
 

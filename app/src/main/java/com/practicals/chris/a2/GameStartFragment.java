@@ -26,30 +26,19 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GameStartFragment extends Fragment {
 
-    int count = 0; // Keeps track of how many values are in the new arrayList
-    TextView number_1;
-    TextView number_2;
-    TextView number_3;
-    TextView number_4;
-    TextView number_5;
-    TextView number_6;
-    TextView number_7;
-    Button bigNumberButton;
-    Button smallNumberButton;
-    ArrayList<TextView> numberTextViews;
-    ArrayList<Integer> newValues = new ArrayList<>();
-    TextView goalText;
-    int[] level_1_goal = new int[]{100, 500};
-    int[] level_2_goal = new int[]{500, 1000};
-    int[] level_3_goal = new int[]{1000, 2000};
-    private OnFragmentInteractionListener mListener;
+    private final ArrayList<Integer> newValues = new ArrayList<>();
+    private final int[] level_1_goal = new int[]{100, 500};
+    private final int[] level_2_goal = new int[]{500, 1000};
+    private final int[] level_3_goal = new int[]{1000, 2000};
     // min/max for small/big number generation
-    private int smallMin = 1;
-    private int smallMax = 10;
-    private int bigMin = 10;
-    private int bigMax = 100;
-
-    int goalNumber;
+    private final int smallMin = 1;
+    private final int smallMax = 10;
+    private final int bigMin = 10;
+    private final int bigMax = 100;
+    private int count = 0; // Keeps track of how many values are in the new arrayList
+    private ArrayList<TextView> numberTextViews;
+    private OnFragmentInteractionListener mListener;
+    private int goalNumber;
 
 
     public GameStartFragment() {
@@ -87,22 +76,22 @@ public class GameStartFragment extends Fragment {
         Log.i("Game", "GameStartFragment created.");
 
         numberTextViews = new ArrayList<>();
-        number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
-        number_2 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_2);
-        number_3 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_3);
-        number_4 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_4);
-        number_5 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_5);
-        number_6 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_6);
-        number_7 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_7);
+        TextView number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
+        TextView number_2 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_2);
+        TextView number_3 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_3);
+        TextView number_4 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_4);
+        TextView number_5 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_5);
+        TextView number_6 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_6);
+        TextView number_7 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_7);
 
-        bigNumberButton = getView().findViewById(R.id.bigButton);
+        Button bigNumberButton = getView().findViewById(R.id.bigButton);
         bigNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addNewValue(getNewNumber(bigMin, bigMax));
             }
         });
-        smallNumberButton = getView().findViewById(R.id.smallButton);
+        Button smallNumberButton = getView().findViewById(R.id.smallButton);
         smallNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +107,7 @@ public class GameStartFragment extends Fragment {
         numberTextViews.add(number_6);
         numberTextViews.add(number_7);
 
-        goalText = Objects.requireNonNull(getView()).findViewById(R.id.playGoalText);
+        TextView goalText = Objects.requireNonNull(getView()).findViewById(R.id.playGoalText);
 
 
         int min = 0;
@@ -145,7 +134,7 @@ public class GameStartFragment extends Fragment {
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    void addNewValue(int valueToBeAdded) {
+    private void addNewValue(int valueToBeAdded) {
         numberTextViews.get(count).setText(String.format("%d", valueToBeAdded));
         count++;
         newValues.add(valueToBeAdded);
@@ -174,7 +163,7 @@ public class GameStartFragment extends Fragment {
         startNewPlayFragmentWithBundle(bundle);
     }
 
-    void startNewPlayFragmentWithBundle(Bundle goalAndValues) {
+    private void startNewPlayFragmentWithBundle(Bundle goalAndValues) {
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(((ViewGroup) (Objects.requireNonNull(getView()).getParent())).getId(),

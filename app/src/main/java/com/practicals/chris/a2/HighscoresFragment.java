@@ -20,10 +20,9 @@ import java.util.Comparator;
 
 public class HighscoresFragment extends Fragment {
 
-    ListView listViewHighScores;
-    ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<ArrayList<HighscoreRequestSQL>>();
+    private final ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<>();
+    private ListView listViewHighScores;
     private OnFragmentInteractionListener mListener;
-    private DBController dbController;
 
     public HighscoresFragment() {
         // Required empty public constructor
@@ -40,9 +39,6 @@ public class HighscoresFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -56,7 +52,7 @@ public class HighscoresFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dbController = new DBController(getContext());
+        DBController dbController = new DBController(getContext());
         SQLiteDatabase db = dbController.getReadableDatabase();
 
         Cursor cursor = db.query(true, DBController.TABLE_NAME,
@@ -87,6 +83,8 @@ public class HighscoresFragment extends Fragment {
                     break;
             }
         }
+
+        cursor.close();
 
         // Sorting ArrayList by score.
         Collections.sort(arrayListOfHighScores_1, new Comparator<HighscoreRequestSQL>() {
@@ -151,7 +149,7 @@ public class HighscoresFragment extends Fragment {
         });
     }
 
-    void hs_button_click(View view) {
+    private void hs_button_click(View view) {
         switch (view.getId()) {
             case R.id.btn_score_one:
                 swapHighScore(0);

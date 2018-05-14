@@ -20,16 +20,7 @@ import java.util.Objects;
 
 public class GamePlayFragment extends Fragment {
 
-    int goalNumber;
-    int[] newValues;
-    Button playButton1;
-    Button playButton2;
-    Button playButton3;
-    Button playButton4;
-    Button playButton5;
-    Button playButton6;
-    Button playButton7;
-    ArrayList<Button> buttonArrayList = new ArrayList<>();
+    private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
 
     public GamePlayFragment() {
@@ -66,20 +57,20 @@ public class GamePlayFragment extends Fragment {
 
         Log.i("Game", "GamePlayFragment created.");
 
-        newValues = Objects.requireNonNull(getArguments()).getIntArray("values");
-        goalNumber = Objects.requireNonNull(getArguments()).getInt("goal");
+        int[] newValues = Objects.requireNonNull(getArguments()).getIntArray("values");
+        int goalNumber = Objects.requireNonNull(getArguments()).getInt("goal");
 
         Log.i("Game", Arrays.toString(newValues) + ", From PlayFragment.");
 
         TextView goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
 
-        playButton1 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_1);
-        playButton2 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_2);
-        playButton3 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_3);
-        playButton4 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_4);
-        playButton5 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_5);
-        playButton6 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_6);
-        playButton7 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_7);
+        Button playButton1 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_1);
+        Button playButton2 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_2);
+        Button playButton3 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_3);
+        Button playButton4 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_4);
+        Button playButton5 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_5);
+        Button playButton6 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_6);
+        Button playButton7 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_7);
 
         buttonArrayList.add(playButton1);
         buttonArrayList.add(playButton2);
@@ -122,16 +113,6 @@ public class GamePlayFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

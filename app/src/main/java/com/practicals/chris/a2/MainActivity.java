@@ -16,13 +16,8 @@ import java.util.Random;
 
 public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighscoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
 
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    Fragment mainFragmentContainer;
-
-    private DBController dbController;
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final FragmentManager fragmentManager = getSupportFragmentManager();
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -44,6 +39,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
             return false;
         }
     };
+    private DBController dbController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         // Set up
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
+        Fragment mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
         replaceFragment(new GameStartFragment());
 
     }
@@ -80,7 +76,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
     }
 
     // Used for the navigation mostly
-    public void replaceFragment(Fragment newFragment) {
+    private void replaceFragment(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainFragmentContainer, newFragment, newFragment.toString());
         fragmentTransaction.addToBackStack(null);

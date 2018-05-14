@@ -24,7 +24,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class SettingsFragment extends Fragment {
 
     Spinner spin_timer;
-    Spinner spin_level;
+    private Spinner spin_level;
     private OnFragmentInteractionListener mListener;
 
 
@@ -93,7 +93,7 @@ public class SettingsFragment extends Fragment {
         spin_level = getView().findViewById(R.id.spin_level);
         Integer[] spinner_levels = new Integer[]{1, 2, 3};
 
-        spin_level.setAdapter(new ArrayAdapter<Integer>(Objects.requireNonNull(getContext()),
+        spin_level.setAdapter(new ArrayAdapter<>(Objects.requireNonNull(getContext()),
                 android.R.layout.simple_spinner_item, spinner_levels));
 
         spin_level.setSelection(pref_level);

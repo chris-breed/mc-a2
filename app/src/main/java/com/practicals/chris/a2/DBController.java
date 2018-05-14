@@ -5,24 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DBController extends SQLiteOpenHelper {
+class DBController extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "HighScores";
     private static final int DATABASE_VERSION = 20; // Increment
     private static final String DATABASE_NAME = "CountdownDB";
     private static final String SCORE = "Score";
     private static final String DATETIME = "Datetime";
     private static final String LEVEL = "Difficulty";
-    private static String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
+    private static final String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
             + " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DATETIME + " DATETIME, "
             + SCORE + " INTEGER, "
             + LEVEL + " INTEGER);";
-    private static String SQL_INSERT_ENTRY =
+    private static final String SQL_INSERT_ENTRY =
             "INSERT INTO " + TABLE_NAME + " (" + DATETIME + ", " +
                     SCORE + ", " + LEVEL + ")" + " VALUES (datetime(), %s, %s);";
-    private static String SQL_DROP_TABLE =
+    private static final String SQL_DROP_TABLE =
             "DROP TABLE " + DBController.TABLE_NAME + ";";
-    SQLiteDatabase myDB;
 
     DBController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,7 +29,7 @@ public class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        this.myDB = db;
+        SQLiteDatabase myDB = db;
         createDB();
     }
 

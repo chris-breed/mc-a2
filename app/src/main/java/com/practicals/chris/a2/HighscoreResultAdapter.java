@@ -1,6 +1,7 @@
 package com.practicals.chris.a2;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +10,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class HighscoreResultAdapter extends ArrayAdapter {
+class HighscoreResultAdapter extends ArrayAdapter {
 
-    protected Context context;
-    protected ArrayList<HighscoreRequestSQL> items;
+    private final ArrayList<HighscoreRequestSQL> items;
 
-    public HighscoreResultAdapter(Context context, ArrayList<HighscoreRequestSQL> items) {
+    HighscoreResultAdapter(Context context, ArrayList<HighscoreRequestSQL> items) {
         super(context, R.layout.list_view_layout, items);
-        this.context = context;
         this.items = items;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_view_layout, null);
         }

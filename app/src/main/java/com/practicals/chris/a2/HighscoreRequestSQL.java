@@ -1,10 +1,10 @@
 package com.practicals.chris.a2;
 
-public class HighscoreRequestSQL {
+class HighscoreRequestSQL {
 
-    String datetime;
-    int score;
-    int level;
+    private final String datetime;
+    private final int score;
+    private final int level;
 
 
     HighscoreRequestSQL(String datetime, int score, int level) {
