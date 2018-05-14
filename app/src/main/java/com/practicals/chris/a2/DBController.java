@@ -3,30 +3,26 @@ package com.practicals.chris.a2;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBController extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 9; // Increment
-
-    private static final String DATABASE_NAME = "CountdownDB";
     public static final String TABLE_NAME = "HighScores";
-    public static final String SCORE = "Score";
-    public static final String DATETIME = "Datetime";
-
-    SQLiteDatabase myDB;
-
-
+    private static final int DATABASE_VERSION = 20; // Increment
+    private static final String DATABASE_NAME = "CountdownDB";
+    private static final String SCORE = "Score";
+    private static final String DATETIME = "Datetime";
+    private static final String LEVEL = "Difficulty";
     private static String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
             + " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DATETIME + " DATETIME, "
-            + SCORE + " INTEGER);";
-
-
+            + SCORE + " INTEGER, "
+            + LEVEL + " INTEGER);";
     private static String SQL_INSERT_ENTRY =
-            "INSERT INTO " + DBController.TABLE_NAME + "(" + DBController.DATETIME + ", " +
-                    DBController.SCORE + ")" + " VALUES (datetime(), %s);";
-
-    private static String SQL_GET_SCORES =
-            "SELECT * FROM " + DBController.TABLE_NAME + " ORDER BY " + DBController.SCORE + "DESC LIMIT %s;";
+            "INSERT INTO " + TABLE_NAME + " (" + DATETIME + ", " +
+                    SCORE + ", " + LEVEL + ")" + " VALUES (datetime(), %s, %s);";
+    private static String SQL_DROP_TABLE =
+            "DROP TABLE " + DBController.TABLE_NAME + ";";
+    SQLiteDatabase myDB;
 
     DBController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,27 +30,28 @@ public class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        createDB(db);
+        this.myDB = db;
+        createDB();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
-        createDB(db);
+        db.execSQL(createDB());
     }
 
-    private void createDB(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE);
-
-        this.myDB = db;
+    String createDB() {
+        Log.i("DB", SQL_CREATE_TABLE);
+        return SQL_CREATE_TABLE;
     }
 
-    String insertScore(int score) {
-        return String.format(SQL_INSERT_ENTRY, score);
+    String insertScore(int score, int level) {
+        Log.i("DB", String.format(SQL_INSERT_ENTRY, score, level));
+        return String.format(SQL_INSERT_ENTRY, score, level);
     }
 
-    String getScores() {
-        return SQL_GET_SCORES;
+    String dropTable() {
+        return SQL_DROP_TABLE;
     }
 
 }

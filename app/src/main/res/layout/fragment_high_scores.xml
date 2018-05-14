@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".HighScoresFragment">
+    tools:context=".HighscoresFragment">
 
 
     <TextView
-        android:id="@+id/text_high_score"
+        android:id="@+id/title_high_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:text="@string/text_high_scores"
+        android:text="@string/title_high_scores"
         android:textAlignment="center"
         android:textSize="20sp" />
 
@@ -41,6 +41,15 @@
             android:textAlignment="center"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/txt_level"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/level"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
     <View
@@ -55,6 +64,39 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:textAlignment="center" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_score_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:text="One" />
+
+            <Button
+                android:id="@+id/btn_score_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:text="Two" />
+
+            <Button
+                android:id="@+id/btn_score_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:text="Three" />
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.practicals.chris.a2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,20 +22,11 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
+import static android.content.Context.MODE_PRIVATE;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link GameStartFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link GameStartFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class GameStartFragment extends Fragment {
 
-    public Random rand = new Random();
     int count = 0; // Keeps track of how many values are in the new arrayList
-
     TextView number_1;
     TextView number_2;
     TextView number_3;
@@ -42,21 +34,23 @@ public class GameStartFragment extends Fragment {
     TextView number_5;
     TextView number_6;
     TextView number_7;
-
     Button bigNumberButton;
     Button smallNumberButton;
-
     ArrayList<TextView> numberTextViews;
     ArrayList<Integer> newValues = new ArrayList<>();
     TextView goalText;
-    int[] numbersReceived;
-    Countdown countdownController;
+    int[] level_1_goal = new int[]{100, 500};
+    int[] level_2_goal = new int[]{500, 1000};
+    int[] level_3_goal = new int[]{1000, 2000};
     private OnFragmentInteractionListener mListener;
     // min/max for small/big number generation
     private int smallMin = 1;
     private int smallMax = 10;
     private int bigMin = 10;
     private int bigMax = 100;
+
+    int goalNumber;
+
 
     public GameStartFragment() {
         // Required empty public constructor
@@ -84,6 +78,11 @@ public class GameStartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Checking SharedPreferences
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
+                .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
+        int pref_level = sharedPreferences.getInt("Level", 2);
 
         Log.i("Game", "GameStartFragment created.");
 
@@ -121,10 +120,28 @@ public class GameStartFragment extends Fragment {
 
         goalText = Objects.requireNonNull(getView()).findViewById(R.id.playGoalText);
 
-        countdownController = new Countdown(1000, 50); // min/max for the goal number
-        countdownController.start();
-        goalText.setText(String.valueOf(countdownController.getGoalNumber()));
 
+        int min = 0;
+        int max = 0;
+        switch (pref_level) {
+            case 0:
+                min = level_1_goal[0];
+                max = level_1_goal[1];
+                break;
+            case 1:
+                min = level_2_goal[0];
+                max = level_2_goal[1];
+                break;
+            case 2:
+                min = level_3_goal[0];
+                max = level_3_goal[1];
+                break;
+        }
+
+        Log.i("Countdown", String.format("%s, %s", min, max));
+        Random rand = new Random();
+        goalNumber = rand.nextInt((max - min) + 1) + min;
+        goalText.setText(String.valueOf(goalNumber));
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
@@ -146,7 +163,7 @@ public class GameStartFragment extends Fragment {
         }
 
         // newValues ArrayList and the goalNumber int.
-        Numbers numbers = new Numbers(valuesToBePassed, countdownController.getGoalNumber());
+        Numbers numbers = new Numbers(valuesToBePassed, goalNumber);
 
         Log.i("Game", "Goal Number: " + numbers.getGoalNumber() + ". Base numbers: " + Arrays.toString(numbers.getNumberArray()));
 
@@ -169,6 +186,7 @@ public class GameStartFragment extends Fragment {
     private int getNewNumber(int min, int max) {
         int number = 0;
         while (number <= 0) {
+            Random rand = new Random();
             number = rand.nextInt(max - min) + min;
         }
         return number;
@@ -191,20 +209,8 @@ public class GameStartFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

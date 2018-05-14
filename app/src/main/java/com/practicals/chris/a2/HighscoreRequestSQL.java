@@ -4,18 +4,24 @@ public class HighscoreRequestSQL {
 
     String datetime;
     int score;
+    int level;
 
 
-    HighscoreRequestSQL(String datetime, String score) {
+    HighscoreRequestSQL(String datetime, int score, int level) {
         this.datetime = datetime;
-        this.score = Integer.parseInt(score);
+        this.score = score;
+        this.level = level;
     }
 
-    int getScore(){
+    int getScore() {
         return score;
     }
 
-    String getDate(){
+    String getDate() {
         return datetime;
+    }
+
+    int getLevel() {
+        return level;
     }
 }

@@ -1,6 +1,5 @@
 package com.practicals.chris.a2;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.Date;
-import java.util.Calendar;
 import java.util.Random;
 
 
-public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighScoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighscoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager = getSupportFragmentManager();
     Fragment mainFragmentContainer;
@@ -41,7 +37,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
                     replaceFragment(settingsFragment);
                     return true;
                 case R.id.nav_scores:
-                    Fragment highScoresFragment = new HighScoresFragment();
+                    Fragment highScoresFragment = new HighscoresFragment();
                     replaceFragment(highScoresFragment);
                     return true;
             }
@@ -68,16 +64,8 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         dbController = new DBController(this);
         SQLiteDatabase db = dbController.getReadableDatabase();
 
-        Cursor cursor = db.query(true, DBController.TABLE_NAME,
-                null, null, null, null, null, null, null);
-
-//        while (cursor.moveToNext()) {
-//            String age = cursor.getString(1);
-//            Log.i("DB", "Age: " + age);
-//        }
-
         Random rand = new Random();
-        db.execSQL(dbController.insertScore(rand.nextInt(1000) + 1));
+        db.execSQL(dbController.insertScore(rand.nextInt(1000) + 1, rand.nextInt(3) + 1));
     }
 
     @Override
@@ -93,8 +81,6 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
 
     // Used for the navigation mostly
     public void replaceFragment(Fragment newFragment) {
-
-
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainFragmentContainer, newFragment, newFragment.toString());
         fragmentTransaction.addToBackStack(null);

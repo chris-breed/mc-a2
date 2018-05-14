@@ -27,6 +27,7 @@ public class HighscoreResultAdapter extends ArrayAdapter {
 
         ((TextView) convertView.findViewById(R.id.lv_date)).setText(items.get(position).getDate());
         ((TextView) convertView.findViewById(R.id.lv_score)).setText(String.valueOf(items.get(position).getScore()));
+        ((TextView) convertView.findViewById(R.id.lv_level)).setText(String.valueOf(items.get(position).getLevel()));
 
         return convertView;
     }
