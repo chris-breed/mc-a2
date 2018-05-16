@@ -1,8 +1,11 @@
 package com.practicals.chris.a2;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +29,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GameStartFragment extends Fragment {
 
+    private static String previous_score;
+
     private final ArrayList<Integer> newValues = new ArrayList<>();
     private final int[] level_1_goal = new int[]{100, 500};
     private final int[] level_2_goal = new int[]{500, 1000};
@@ -45,10 +50,9 @@ public class GameStartFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GameStartFragment newInstance(String param1, String param2) {
+    public static GameStartFragment newInstance(Bundle bundle) {
         GameStartFragment fragment = new GameStartFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
+        previous_score = String.valueOf(bundle.getInt("score"));
         return fragment;
     }
 
@@ -71,9 +75,36 @@ public class GameStartFragment extends Fragment {
         // Checking SharedPreferences
         SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
                 .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
-        int pref_level = sharedPreferences.getInt("Level", 2);
+        final int pref_level = sharedPreferences.getInt("Level", 2);
 
         Log.i("Game", "GameStartFragment created.");
+
+        Button quit_button = getView().findViewById(R.id.btn_quit);
+        quit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                alertBuilder.setMessage("Are you sure you want to quit?\nYou're current score will be saved.")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                insertScore(Integer.parseInt(previous_score), pref_level);
+                                previous_score = "0";
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+            }
+        });
+
+        TextView prev_score = getView().findViewById(R.id.txt_current_total_score);
+        prev_score.setText(previous_score);
 
         numberTextViews = new ArrayList<>();
         TextView number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
@@ -144,6 +175,13 @@ public class GameStartFragment extends Fragment {
         }
     }
 
+    private void insertScore(int score, int level) {
+        DBController dbController = new DBController(getContext());
+        SQLiteDatabase db = dbController.getReadableDatabase();
+
+        db.execSQL(dbController.insertScore(score, level + 1));
+    }
+
     // Runs when the newValues ArrayList has 7 values.
     private void moreThanSeven() {
         int[] valuesToBePassed = new int[7];
@@ -159,6 +197,13 @@ public class GameStartFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putInt("goal", numbers.getGoalNumber());
         bundle.putIntArray("values", numbers.getNumberArray());
+
+        try {
+            bundle.putInt("score", Integer.parseInt(previous_score));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
 
         startNewPlayFragmentWithBundle(bundle);
     }

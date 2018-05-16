@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,32 +28,37 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GamePlayFragment extends Fragment {
 
+    SharedPreferences sharedPreferences;
+    int pref_level;
+
     private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
 
-    int[] times = new int[]{120, 60, 30};
+    private final int[] times = new int[]{120, 60, 30};
 
-    int[] newValues;
+    private int[] newValues;
 
-    Button playButton1;
-    Button playButton2;
-    Button playButton3;
-    Button playButton4;
-    Button playButton5;
-    Button playButton6;
-    Button playButton7;
+    private Button playButton1;
+    private Button playButton2;
+    private Button playButton3;
+    private Button playButton4;
+    private Button playButton5;
+    private Button playButton6;
+    private Button playButton7;
 
-    Button addition;
-    Button subtraction;
-    Button multiplication;
-    Button division;
+    private Button addition;
+    private Button subtraction;
+    private Button multiplication;
+    private Button division;
 
-    Button equals;
+    private int currentTotal;
+    private int currentNumber;
 
-    int currentTotal;
-    int currentNumber;
+    private TextView totalText;
 
-    TextView totalText;
+    TextView text_score;
+
+    CountDownTimer timer;
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -62,6 +70,7 @@ public class GamePlayFragment extends Fragment {
 
         args.putInt("goal", bundle.getInt("goal"));
         args.putIntArray("values", bundle.getIntArray("values"));
+        args.putInt("score", bundle.getInt("score"));
 
         fragment.setArguments(args);
         return fragment;
@@ -84,14 +93,23 @@ public class GamePlayFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sharedPreferences = Objects.requireNonNull(getContext())
+                .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
+
+        pref_level = sharedPreferences.getInt("Level", 2);
+
+        text_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_score);
+        text_score.setText(String.valueOf(getArguments().getInt("score")));
+
         Log.i("Game", "GamePlayFragment created.");
 
         newValues = Objects.requireNonNull(getArguments()).getIntArray("values");
-        int goalNumber = Objects.requireNonNull(getArguments()).getInt("goal");
+        final int goalNumber = Objects.requireNonNull(getArguments()).getInt("goal");
+
 
         Log.i("Game", Arrays.toString(newValues) + ", From PlayFragment.");
 
-        TextView goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
+        final TextView goalText = Objects.requireNonNull(getView()).findViewById(R.id.goalText);
         totalText = getView().findViewById(R.id.txt_total);
 
         final int[] values = new int[1];
@@ -104,10 +122,9 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[0];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
-
 
         playButton2 = Objects.requireNonNull(getView()).findViewById(R.id.play_button_2);
         playButton2.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +132,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[1];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
 
@@ -125,7 +142,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[2];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
 
@@ -135,7 +152,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[3];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
 
@@ -145,7 +162,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[4];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
 
@@ -155,7 +172,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[5];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
             }
         });
 
@@ -165,7 +182,7 @@ public class GamePlayFragment extends Fragment {
             public void onClick(View v) {
                 pressableButtons(true);
                 values[0] = newValues[6];
-                test(values[0], currentOperand[0]);
+                equate(values[0], currentOperand[0]);
 
             }
         });
@@ -220,18 +237,59 @@ public class GamePlayFragment extends Fragment {
         goalText.setText(String.valueOf(goalNumber));
 
         // Timer
-        timer();
+        final TextView text_timer = getView().findViewById(R.id.txt_timer);
+        timer = new CountDownTimer(times[pref_level] * 1000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                text_timer.setText(String.valueOf(millisUntilFinished).substring(0, String.valueOf(millisUntilFinished).length() - 3));
+            }
 
+            @Override
+            public void onFinish() {
+                Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
+                game_over_toast.show();
+
+                insertScore(Integer.parseInt(text_score.getText().toString()), pref_level);
+                tweet(); //TODO: tweet
+            }
+        }.start();
+
+        Button submit = getView().findViewById(R.id.btn_submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int goalFinal = goalNumber;
+                int totalFinal = Integer.parseInt(totalText.getText().toString());
+                Log.i("Play", String.format("%s, %s", goalFinal, totalFinal));
+
+                int score = calcScore(totalFinal, goalFinal);
+
+                timer.cancel();
+                // Start new GameStartFragment
+                Bundle bundle = new Bundle();
+                bundle.putInt("score", score + Integer.parseInt(text_score.getText().toString()));
+                startNewStartFragment(bundle);
+            }
+        });
     }
 
-    public void test(int value, String currentOperand) {
+    private void startNewStartFragment(Bundle score) {
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(((ViewGroup) (Objects.requireNonNull(getView()).getParent())).getId(),
+                GameStartFragment.newInstance(score));
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void equate(int value, String currentOperand) {
         currentTotal = Integer.parseInt(totalText.getText().toString());
         currentNumber = Integer.parseInt(totalText.getText().toString());
         if (currentTotal == 0) {
             totalText.setText(String.valueOf(value));
         } else {
             String equation = String.format("%s %s %s", currentNumber, currentOperand, value);
-            Log.i("Play", equation);
+//            Log.i("Play", equation);
             String[] equationTokens = equation.split(" ");
             int newTotal = 0;
             switch (equationTokens[1]) {
@@ -249,22 +307,13 @@ public class GamePlayFragment extends Fragment {
             }
             totalText.setText(String.valueOf(newTotal));
         }
-
-        Button submit = getView().findViewById(R.id.btn_submit);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
-    public void pressableButtons(boolean number) {
+    private void pressableButtons(boolean number) {
         addition.setEnabled(number);
         subtraction.setEnabled(number);
         multiplication.setEnabled(number);
         division.setEnabled(number);
-
 
         playButton1.setEnabled(!number);
         playButton2.setEnabled(!number);
@@ -273,10 +322,6 @@ public class GamePlayFragment extends Fragment {
         playButton5.setEnabled(!number);
         playButton6.setEnabled(!number);
         playButton7.setEnabled(!number);
-    }
-
-    // Current total and Goal Total
-    public void submit() {
     }
 
     private void tweet() {
@@ -312,32 +357,32 @@ public class GamePlayFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void timer() {
-        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
-                .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
-        final int pref_level = sharedPreferences.getInt("Level", 2);
-
-        final TextView text_score = getView().findViewById(R.id.txt_score);
-
-        TextView text_timer = getView().findViewById(R.id.txt_timer);
-        Timer timer = new Timer(times[pref_level] * 1000, 1000, text_timer) {
-            @Override
-            public void onFinish() {
-                // Do a toast and move on to score submission and twitter
-                Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
-                game_over_toast.show();
-
-                insertScore(Integer.parseInt(text_score.getText().toString()), pref_level);
-                tweet(); //TODO: tweet
-            }
-        };
-        timer.start();
-    }
-
     private void insertScore(int score, int level) {
         DBController dbController = new DBController(getContext());
         SQLiteDatabase db = dbController.getReadableDatabase();
 
         db.execSQL(dbController.insertScore(score, level + 1));
+    }
+
+    private int calcScore(int total, int goal) {
+        int score = 0;
+
+        int diff = Math.abs(total - goal);
+        int[] goalRange = new int[]{goal - 200, goal + 200};
+
+        if (total >= goalRange[0] && total <= goalRange[1]) {
+            // 200 diff = 100%, 0 diff = 0%
+            score = diff / 2;
+
+        } else {
+            score = 0;
+        }
+
+
+        Toast score_display_toast = Toast.makeText(getContext(), "You scored: " + score, Toast.LENGTH_SHORT);
+        score_display_toast.show();
+
+        Log.i("Play", "Score of " + score);
+        return score;
     }
 }

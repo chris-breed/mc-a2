@@ -3,12 +3,12 @@ package com.practicals.chris.a2;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
-public class Timer extends CountDownTimer {
+class Timer extends CountDownTimer {
 
-    private TextView timer;
+    private final TextView timer;
 
-    Timer(long millisInFuture, long countDownInterval, TextView timer_text) {
-        super(millisInFuture, countDownInterval);
+    Timer(long millisInFuture, TextView timer_text) {
+        super(millisInFuture, (long) 1000);
         this.timer = timer_text;
     }
 

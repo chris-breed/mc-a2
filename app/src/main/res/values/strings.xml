@@ -22,21 +22,17 @@
     <string name="txt_score">Score</string>
     <string name="txt_clear">Clear</string>
     <string name="txt_clear_highscores">Clear Highscores</string>
-    <string name="text_time_limit">Time Limit</string>
-    <string name="goal_number_range">Goal Number Range</string>
-    <string name="big_number_range">Big Number Range</string>
     <string name="text_level">Level</string>
     <string name="timer_length">Timer Length</string>
     <string name="goal_range">Goal Range</string>
     <string name="level_1">Level 1</string>
     <string name="_120">120</string>
-    <string name="_100_500">100 - 500</string>
+    <string name="_100_500">100 – 500</string>
     <string name="level_2">Level 2</string>
     <string name="_60">60</string>
-    <string name="_500_1000">500 - 1000</string>
+    <string name="_500_1000">500 – 1000</string>
     <string name="level_3">Level 3</string>
     <string name="_30">30</string>
-    <string name="_1000_2000">1000 - 2000</string>
+    <string name="_1000_2000">1000 – 2000</string>
     <string name="level">Level</string>
-    <string name="txt_equals">=</string>
 </resources>
