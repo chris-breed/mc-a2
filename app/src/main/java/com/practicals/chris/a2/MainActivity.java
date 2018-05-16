@@ -1,5 +1,6 @@
 package com.practicals.chris.a2;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,15 +47,13 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         setContentView(R.layout.activity_main);
 
         if (isFirstTime()) {
-            Popup instruction_popup = new Popup();
+            startActivity(new Intent(MainActivity.this, Popup.class));
         }
 
         // Set up
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Fragment mainFragmentContainer = fragmentManager.findFragmentById(R.id.mainFragmentContainer);
         replaceFragment(new GameStartFragment());
-
     }
 
     private boolean isFirstTime()
@@ -65,7 +64,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
             // first time
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("RanBefore", true);
-            editor.commit();
+            editor.apply();
         }
         return !ranBefore;
     }
