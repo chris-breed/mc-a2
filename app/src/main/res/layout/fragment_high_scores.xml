@@ -69,26 +69,14 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_score_one"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txt_current_level"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:text="One" />
-
-            <Button
-                android:id="@+id/btn_score_two"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:text="Two" />
-
-            <Button
-                android:id="@+id/btn_score_three"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:text="Three" />
+                android:layout_weight="1"
+                android:text="@string/default_value"
+                android:textAlignment="center"
+                android:textSize="30sp" />
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>

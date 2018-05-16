@@ -1,5 +1,6 @@
 package com.practicals.chris.a2;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,11 +9,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +23,15 @@ import java.util.Objects;
 
 public class HighscoresFragment extends Fragment {
 
-    private final ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<>();
+    private ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<>();
     private ListView listViewHighScores;
     private OnFragmentInteractionListener mListener;
+
+
+    int position = 1; // Level 2
+    TextView viewingLevel;
+
+    private GestureDetectorCompat detector;
 
     public HighscoresFragment() {
         // Required empty public constructor
@@ -49,6 +57,7 @@ public class HighscoresFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_high_scores, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -59,6 +68,7 @@ public class HighscoresFragment extends Fragment {
         Cursor cursor = db.query(true, DBController.TABLE_NAME,
                 null, null, null, null, null, null, null);
 
+        viewingLevel = Objects.requireNonNull(getView()).findViewById(R.id.txt_current_level);
 
         ArrayList<HighscoreRequestSQL> arrayListOfHighScores_1 = new ArrayList<>();
         ArrayList<HighscoreRequestSQL> arrayListOfHighScores_2 = new ArrayList<>();
@@ -122,51 +132,39 @@ public class HighscoresFragment extends Fragment {
 //        }
 
         listViewHighScores = view.findViewById(R.id.listView);
+        swapHighScore(position);
+        viewingLevel.setText(String.format("%s %s", getString(R.string.viewing_highscore_level), String.valueOf(position + 1)));
 
-
-        // Buttons
-        Button one = Objects.requireNonNull(getView()).findViewById(R.id.btn_score_one);
-        one.setOnClickListener(new View.OnClickListener() {
+        listViewHighScores.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             @Override
-            public void onClick(View v) {
-                hs_button_click(v);
+            public void onSwipeRight() {
+                // Decrease
+                moveListView(false);
             }
-        });
 
-        Button two = getView().findViewById(R.id.btn_score_two);
-        two.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                hs_button_click(v);
+            public void onSwipeLeft() {
+                // Increase
+                moveListView(true);
             }
-        });
 
-        Button three = getView().findViewById(R.id.btn_score_three);
-        three.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hs_button_click(v);
-            }
         });
     }
 
-    private void hs_button_click(View view) {
-        switch (view.getId()) {
-            case R.id.btn_score_one:
-                swapHighScore(0);
-                break;
-            case R.id.btn_score_two:
-                swapHighScore(1);
-                break;
-            case R.id.btn_score_three:
-                swapHighScore(2);
-                break;
+    private void moveListView(boolean left) {
+        if (left) {
+            position++;
+            swapHighScore(position);
+        } else {
+            position--;
+            swapHighScore(position);
         }
     }
 
     private void swapHighScore(int level) {
         HighscoreResultAdapter adapter = new HighscoreResultAdapter(getContext(), all.get(level));
         listViewHighScores.setAdapter(adapter);
+        viewingLevel.setText(String.format("%s %s", getString(R.string.viewing_highscore_level), String.valueOf(position + 1)));
     }
 
     @Override
@@ -186,16 +184,7 @@ public class HighscoresFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

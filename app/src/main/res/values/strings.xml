@@ -36,4 +36,5 @@
     <string name="_1000_2000">1000 – 2000</string>
     <string name="level">Level</string>
     <string name="instructions">Instructions</string>
+    <string name="viewing_highscore_level">Viewing Level:</string>
 </resources>
