@@ -3,6 +3,7 @@ package com.practicals.chris.a2;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -96,6 +97,14 @@ public class SettingsFragment extends Fragment {
                 android.R.layout.simple_spinner_item, spinner_levels));
 
         spin_level.setSelection(pref_level);
+
+        Button btn_instructions = getView().findViewById(R.id.btn_instructions);
+        btn_instructions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), Popup.class));
+            }
+        });
 
     }
 

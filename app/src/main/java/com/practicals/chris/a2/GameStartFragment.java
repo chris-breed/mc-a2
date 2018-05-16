@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GameStartFragment extends Fragment {
 
-    private static String previous_score;
+    private static String previous_score = "0";
 
     private final ArrayList<Integer> newValues = new ArrayList<>();
     private final int[] level_1_goal = new int[]{100, 500};
@@ -44,6 +44,7 @@ public class GameStartFragment extends Fragment {
     private ArrayList<TextView> numberTextViews;
     private OnFragmentInteractionListener mListener;
     private int goalNumber;
+    Button quit_button;
 
 
     public GameStartFragment() {
@@ -79,12 +80,12 @@ public class GameStartFragment extends Fragment {
 
         Log.i("Game", "GameStartFragment created.");
 
-        Button quit_button = getView().findViewById(R.id.btn_quit);
+        quit_button = getView().findViewById(R.id.btn_quit);
         quit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                alertBuilder.setMessage("Are you sure you want to quit?\nYou're current score will be saved.")
+                alertBuilder.setMessage("Are you sure you want to quit?\nYou're current score will be submitted.")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -105,6 +106,11 @@ public class GameStartFragment extends Fragment {
 
         TextView prev_score = getView().findViewById(R.id.txt_current_total_score);
         prev_score.setText(previous_score);
+
+        if ((previous_score.equals("0"))) {
+            quit_button.setVisibility(View.GONE);
+        }
+
 
         numberTextViews = new ArrayList<>();
         TextView number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
