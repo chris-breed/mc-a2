@@ -1,6 +1,5 @@
 package com.practicals.chris.a2;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,12 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
-import java.util.Random;
-
 
 public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighscoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
 
     private final FragmentManager fragmentManager = getSupportFragmentManager();
+
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -39,7 +37,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
             return false;
         }
     };
-    private DBController dbController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +55,12 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
     @Override
     protected void onStart() {
         super.onStart();
-        dbController = new DBController(this);
-        SQLiteDatabase db = dbController.getReadableDatabase();
 
-        Random rand = new Random();
-        db.execSQL(dbController.insertScore(rand.nextInt(1000) + 1, rand.nextInt(3) + 1));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        dbController.close();
     }
 
     @Override

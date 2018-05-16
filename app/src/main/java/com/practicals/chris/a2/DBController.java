@@ -29,7 +29,6 @@ class DBController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        SQLiteDatabase myDB = db;
         createDB();
     }
 

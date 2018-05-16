@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class HighscoresFragment extends Fragment {
 
@@ -42,7 +43,7 @@ public class HighscoresFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_high_scores, container, false);
@@ -124,7 +125,7 @@ public class HighscoresFragment extends Fragment {
 
 
         // Buttons
-        Button one = getView().findViewById(R.id.btn_score_one);
+        Button one = Objects.requireNonNull(getView()).findViewById(R.id.btn_score_one);
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
