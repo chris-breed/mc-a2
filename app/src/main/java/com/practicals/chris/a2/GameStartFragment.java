@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -50,9 +49,9 @@ public class GameStartFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static GameStartFragment newInstance(Bundle bundle) {
+    public static GameStartFragment newInstance() {
         GameStartFragment fragment = new GameStartFragment();
-        previous_score = bundle.getInt("score");
+
         return fragment;
     }
 
@@ -73,9 +72,10 @@ public class GameStartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Checking SharedPreferences
-        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
+        final SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
                 .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
         final int pref_level = sharedPreferences.getInt("Level", 2);
+        previous_score = sharedPreferences.getInt("score", 0);
 
         Log.i("Game", "GameStartFragment created.");
 
@@ -100,12 +100,20 @@ public class GameStartFragment extends Fragment {
                                                 ((MainActivity) Objects.requireNonNull(getActivity()))
                                                         .gameOver(previous_score, pref_level, true);
 
+                                                sharedPreferences.edit().putInt("score", 0).apply();
+                                                Fragment gameStartFragment = new GameStartFragment();
+                                                ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
                                             }
                                         })
                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 ((MainActivity) Objects.requireNonNull(getActivity()))
                                                         .gameOver(previous_score, pref_level, false);
+
+                                                sharedPreferences.edit().putInt("score", 0).apply();
+                                                Fragment gameStartFragment = new GameStartFragment();
+                                                ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
+
                                                 dialog.cancel();
                                             }
                                         });

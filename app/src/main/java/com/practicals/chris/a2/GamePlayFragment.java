@@ -29,16 +29,14 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GamePlayFragment extends Fragment {
 
+    private final ArrayList<Button> buttonArrayList = new ArrayList<>();
+    private final int[] times = new int[]{120, 60, 30};
+    SoundController soundController;
+    int music;
     private SharedPreferences sharedPreferences;
     private int pref_level;
-
-    private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
-
-    private final int[] times = new int[]{120, 60, 30};
-
     private int[] newValues;
-
     private Button playButton1;
     private Button playButton2;
     private Button playButton3;
@@ -46,19 +44,14 @@ public class GamePlayFragment extends Fragment {
     private Button playButton5;
     private Button playButton6;
     private Button playButton7;
-
     private Button addition;
     private Button subtraction;
     private Button multiplication;
     private Button division;
-
     private int currentTotal;
     private TextView totalText;
     private TextView text_score;
     private CountDownTimer timer;
-
-    SoundController soundController;
-    int music;
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -256,6 +249,7 @@ public class GamePlayFragment extends Fragment {
 
                 soundController.stop(music);
 
+
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
                 alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
                         .setCancelable(false)
@@ -292,19 +286,18 @@ public class GamePlayFragment extends Fragment {
                 soundController.stop(music);
                 timer.cancel();
                 // Start new GameStartFragment
-                Bundle bundle = new Bundle();
-                bundle.putInt("score", score + Integer.parseInt(text_score.getText().toString()));
-                startNewStartFragment(bundle);
+                sharedPreferences.edit().putInt("score", score).apply();
+                startNewStartFragment();
             }
         });
     }
 
 
-    private void startNewStartFragment(Bundle score) {
+    private void startNewStartFragment() {
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(((ViewGroup) (Objects.requireNonNull(getView()).getParent())).getId(),
-                GameStartFragment.newInstance(score));
+                GameStartFragment.newInstance());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -375,12 +368,6 @@ public class GamePlayFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
-
     private int calcScore(int total, int goal) {
         int score = 0;
 
@@ -403,5 +390,11 @@ public class GamePlayFragment extends Fragment {
 
         Log.i("Play", "Score of " + score);
         return score;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }

@@ -16,11 +16,12 @@ import android.widget.Toast;
 
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
+import java.util.Objects;
+
 
 public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighscoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
-
+    private SharedPreferences sharedPreferences;
     private final FragmentManager fragmentManager = getSupportFragmentManager();
-
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -28,6 +29,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.nav_game:
+                    sharedPreferences.edit().putInt("score", 0).apply();
                     Fragment gameStartFragment = new GameStartFragment();
                     replaceFragment(gameStartFragment);
                     return true;
@@ -44,11 +46,12 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = Objects.requireNonNull(this)
+                .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
 
         if (isFirstTime()) {
             startActivity(new Intent(MainActivity.this, Popup.class));
@@ -102,7 +105,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         score_display_toast.show();
 
         insertScore(score, level);
-        if(tweet)
+        if (tweet)
             tweeter(score);
     }
 
@@ -117,7 +120,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
     }
 
     // Used for the navigation mostly
-    private void replaceFragment(Fragment newFragment) {
+    public void replaceFragment(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainFragmentContainer, newFragment, newFragment.toString());
         fragmentTransaction.addToBackStack(null);

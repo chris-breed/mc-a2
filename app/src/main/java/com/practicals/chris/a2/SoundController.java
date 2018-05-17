@@ -8,11 +8,11 @@ public class SoundController {
     private SoundPool pool;
     private Context context;
 
-    public SoundController(Context context) {
+    SoundController(Context context) {
 
         this.context = context;
         SoundPool.Builder builder = new SoundPool.Builder();
-        builder.setMaxStreams(10);
+        builder.setMaxStreams(1);
         pool = builder.build();
     }
 
