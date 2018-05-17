@@ -287,6 +287,11 @@ public class GamePlayFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mediaPlayer.stop();
+    }
 
     private void startNewStartFragment() {
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
