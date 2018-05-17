@@ -53,12 +53,12 @@ public class GamePlayFragment extends Fragment {
     private Button division;
 
     private int currentTotal;
-
     private TextView totalText;
-
     private TextView text_score;
-
     private CountDownTimer timer;
+
+    SoundController soundController;
+    int music;
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -236,6 +236,11 @@ public class GamePlayFragment extends Fragment {
         }
         goalText.setText(String.valueOf(goalNumber));
 
+        soundController = new SoundController(getContext());
+        music = soundController.addSound(R.raw.thirtyseconds);
+
+        soundController.play(music);
+
         // Timer
         final TextView text_timer = getView().findViewById(R.id.txt_timer);
         timer = new CountDownTimer(times[pref_level] * 1000, 1000) {
@@ -248,6 +253,8 @@ public class GamePlayFragment extends Fragment {
             public void onFinish() {
                 Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
                 game_over_toast.show();
+
+                soundController.stop(music);
 
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
                 alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
@@ -282,7 +289,7 @@ public class GamePlayFragment extends Fragment {
                 Log.i("Play", String.format("%s, %s", goalNumber, totalFinal));
 
                 int score = calcScore(totalFinal, goalNumber);
-
+                soundController.stop(music);
                 timer.cancel();
                 // Start new GameStartFragment
                 Bundle bundle = new Bundle();

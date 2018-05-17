@@ -44,7 +44,6 @@ public class GameStartFragment extends Fragment {
     private ArrayList<TextView> numberTextViews;
     private OnFragmentInteractionListener mListener;
     private int goalNumber;
-    private Button quit_button;
 
 
     public GameStartFragment() {
@@ -83,7 +82,7 @@ public class GameStartFragment extends Fragment {
         TextView prev_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_current_total_score);
         prev_score.setText(String.valueOf(previous_score));
 
-        quit_button = getView().findViewById(R.id.btn_quit);
+        Button quit_button = getView().findViewById(R.id.btn_quit);
         quit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,13 +197,6 @@ public class GameStartFragment extends Fragment {
         }
     }
 
-    private void insertScore(int score, int level) {
-        DBController dbController = new DBController(getContext());
-        SQLiteDatabase db = dbController.getReadableDatabase();
-
-        db.execSQL(dbController.insertScore(score, level + 1));
-    }
-
     // Runs when the newValues ArrayList has 7 values.
     private void moreThanSeven() {
         int[] valuesToBePassed = new int[7];
@@ -226,8 +218,6 @@ public class GameStartFragment extends Fragment {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
-
         startNewPlayFragmentWithBundle(bundle);
     }
 
@@ -267,7 +257,6 @@ public class GameStartFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
