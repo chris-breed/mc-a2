@@ -12,7 +12,7 @@ class DBController extends SQLiteOpenHelper {
     private static final String SCORE = "Score";
     private static final String DATETIME = "Datetime";
     private static final String LEVEL = "Difficulty";
-    private static final String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
+    private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
             + " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DATETIME + " DATETIME, "
             + SCORE + " INTEGER, "

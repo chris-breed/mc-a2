@@ -2,7 +2,6 @@ package com.practicals.chris.a2;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -249,8 +248,8 @@ public class GamePlayFragment extends Fragment {
                 Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
                 game_over_toast.show();
 
-                insertScore(Integer.parseInt(text_score.getText().toString()), pref_level);
-                tweet(); //TODO: tweet
+                ((MainActivity) Objects.requireNonNull(getActivity()))
+                        .gameOver(Integer.parseInt(text_score.getText().toString()), pref_level);
             }
         }.start();
 
@@ -272,6 +271,7 @@ public class GamePlayFragment extends Fragment {
             }
         });
     }
+
 
     private void startNewStartFragment(Bundle score) {
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
@@ -324,10 +324,6 @@ public class GamePlayFragment extends Fragment {
         playButton7.setEnabled(!number);
     }
 
-    private void tweet() {
-
-    }
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -357,26 +353,22 @@ public class GamePlayFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void insertScore(int score, int level) {
-        DBController dbController = new DBController(getContext());
-        SQLiteDatabase db = dbController.getReadableDatabase();
-
-        db.execSQL(dbController.insertScore(score, level + 1));
-    }
 
     private int calcScore(int total, int goal) {
         int score = 0;
 
         int diff = Math.abs(total - goal);
-        int[] goalRange = new int[]{goal - 200, goal + 200};
+        int[] bigGoalRange = new int[]{goal - 200, goal + 200};
+        int[] smallGoalRange = new int[]{goal - 100, goal + 100};
+        int[] verySmallGoalRange = new int[]{goal - 50, goal + 50};
 
-        if (total >= goalRange[0] && total <= goalRange[1]) {
-            // 200 diff = 100%, 0 diff = 0%
-            score = diff / 2;
+        if (total == goal) score += 100;
 
-        } else {
-            score = 0;
-        }
+        if (total >= verySmallGoalRange[0] && total <= verySmallGoalRange[1]) score += 45;
+
+        if (total >= smallGoalRange[0] && total <= smallGoalRange[1]) score += 30;
+
+        if (total >= bigGoalRange[0] && total <= bigGoalRange[1]) score += 10;
 
 
         Toast score_display_toast = Toast.makeText(getContext(), "You scored: " + score, Toast.LENGTH_SHORT);

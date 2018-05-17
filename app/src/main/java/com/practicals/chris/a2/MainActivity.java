@@ -2,6 +2,7 @@ package com.practicals.chris.a2;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 
 public class MainActivity extends FragmentActivity implements SettingsFragment.OnFragmentInteractionListener, HighscoresFragment.OnFragmentInteractionListener, GameStartFragment.OnFragmentInteractionListener, GamePlayFragment.OnFragmentInteractionListener {
@@ -50,14 +53,17 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
             startActivity(new Intent(MainActivity.this, Popup.class));
         }
 
+        DBController dbController = new DBController(getApplicationContext());
+        SQLiteDatabase db = dbController.getReadableDatabase();
+        db.execSQL(dbController.createDB());
+
         // Set up
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         replaceFragment(new GameStartFragment());
     }
 
-    private boolean isFirstTime()
-    {
+    private boolean isFirstTime() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         boolean ranBefore = preferences.getBoolean("RanBefore", false);
         if (!ranBefore) {
@@ -73,6 +79,25 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
     protected void onStart() {
         super.onStart();
 
+    }
+
+    public void tweeter(int score) {
+        TweetComposer.Builder tweet_builder = new TweetComposer.Builder(this)
+                .text(String.format("I achieved a score of %s on Countdown App!", score));
+        tweet_builder.show();
+
+    }
+
+    void insertScore(int score, int level) {
+        DBController dbController = new DBController(this);
+        SQLiteDatabase db = dbController.getReadableDatabase();
+
+        db.execSQL(dbController.insertScore(score, level + 1));
+    }
+
+    public void gameOver(int score, int level) {
+        insertScore(score, level);
+        tweeter(score);
     }
 
     @Override

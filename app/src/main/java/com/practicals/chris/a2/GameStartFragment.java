@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GameStartFragment extends Fragment {
 
-    private static String previous_score = "0";
+    static int previous_score;
 
     private final ArrayList<Integer> newValues = new ArrayList<>();
     private final int[] level_1_goal = new int[]{100, 500};
@@ -53,7 +53,7 @@ public class GameStartFragment extends Fragment {
 
     public static GameStartFragment newInstance(Bundle bundle) {
         GameStartFragment fragment = new GameStartFragment();
-        previous_score = String.valueOf(bundle.getInt("score"));
+        previous_score = bundle.getInt("score");
         return fragment;
     }
 
@@ -80,6 +80,9 @@ public class GameStartFragment extends Fragment {
 
         Log.i("Game", "GameStartFragment created.");
 
+        TextView prev_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_current_total_score);
+        prev_score.setText(String.valueOf(previous_score));
+
         quit_button = getView().findViewById(R.id.btn_quit);
         quit_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +92,24 @@ public class GameStartFragment extends Fragment {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                insertScore(Integer.parseInt(previous_score), pref_level);
-                                previous_score = "0";
+                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                                alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+
+                                                ((MainActivity) Objects.requireNonNull(getActivity()))
+                                                        .gameOver(previous_score, pref_level);
+
+                                            }
+                                        })
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                                AlertDialog alert = alertBuilder.create();
+                                alert.show();
 
                             }
                         })
@@ -99,18 +118,14 @@ public class GameStartFragment extends Fragment {
                                 dialog.cancel();
                             }
                         });
+
                 AlertDialog alert = alertBuilder.create();
                 alert.show();
             }
         });
-
-        TextView prev_score = getView().findViewById(R.id.txt_current_total_score);
-        prev_score.setText(previous_score);
-
-        if ((previous_score.equals("0"))) {
+        if ((previous_score == 0)) {
             quit_button.setVisibility(View.GONE);
         }
-
 
         numberTextViews = new ArrayList<>();
         TextView number_1 = Objects.requireNonNull(getView()).findViewById(R.id.numbers_1);
@@ -205,7 +220,7 @@ public class GameStartFragment extends Fragment {
         bundle.putIntArray("values", numbers.getNumberArray());
 
         try {
-            bundle.putInt("score", Integer.parseInt(previous_score));
+            bundle.putInt("score", previous_score);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
