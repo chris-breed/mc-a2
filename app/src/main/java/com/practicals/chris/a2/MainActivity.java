@@ -119,6 +119,12 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sharedPreferences.edit().putInt("score", 0).apply();
+    }
+
     // Used for the navigation mostly
     public void replaceFragment(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

@@ -53,6 +53,8 @@ public class GamePlayFragment extends Fragment {
     private TextView text_score;
     private CountDownTimer timer;
 
+    int previous_score;
+
     public GamePlayFragment() {
         // Required empty public constructor
     }
@@ -92,7 +94,8 @@ public class GamePlayFragment extends Fragment {
         pref_level = sharedPreferences.getInt("Level", 2);
 
         text_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_score);
-        text_score.setText(String.valueOf(Objects.requireNonNull(getArguments()).getInt("score")));
+        previous_score = sharedPreferences.getInt("score", 0);
+        text_score.setText(String.valueOf(previous_score));
 
         Log.i("Game", "GamePlayFragment created.");
 
@@ -286,7 +289,7 @@ public class GamePlayFragment extends Fragment {
                 soundController.stop(music);
                 timer.cancel();
                 // Start new GameStartFragment
-                sharedPreferences.edit().putInt("score", score).apply();
+                sharedPreferences.edit().putInt("score", score + previous_score).apply();
                 startNewStartFragment();
             }
         });
@@ -371,7 +374,6 @@ public class GamePlayFragment extends Fragment {
     private int calcScore(int total, int goal) {
         int score = 0;
 
-        int diff = Math.abs(total - goal);
         int[] bigGoalRange = new int[]{goal - 200, goal + 200};
         int[] smallGoalRange = new int[]{goal - 100, goal + 100};
         int[] verySmallGoalRange = new int[]{goal - 50, goal + 50};
