@@ -1,6 +1,8 @@
 package com.practicals.chris.a2;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -248,8 +250,28 @@ public class GamePlayFragment extends Fragment {
                 Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
                 game_over_toast.show();
 
-                ((MainActivity) Objects.requireNonNull(getActivity()))
-                        .gameOver(Integer.parseInt(text_score.getText().toString()), pref_level);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                ((MainActivity) Objects.requireNonNull(getActivity()))
+                                        .gameOver(Integer.parseInt(text_score.getText().toString()), pref_level, true);
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ((MainActivity) Objects.requireNonNull(getActivity()))
+                                        .gameOver(Integer.parseInt(text_score.getText().toString()), pref_level, false);
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = alertBuilder.create();
+                alert.show();
+
+
             }
         }.start();
 

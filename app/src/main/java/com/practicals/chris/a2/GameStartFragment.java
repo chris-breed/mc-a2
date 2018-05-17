@@ -99,12 +99,14 @@ public class GameStartFragment extends Fragment {
                                             public void onClick(DialogInterface dialog, int id) {
 
                                                 ((MainActivity) Objects.requireNonNull(getActivity()))
-                                                        .gameOver(previous_score, pref_level);
+                                                        .gameOver(previous_score, pref_level, true);
 
                                             }
                                         })
                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
+                                                ((MainActivity) Objects.requireNonNull(getActivity()))
+                                                        .gameOver(previous_score, pref_level, false);
                                                 dialog.cancel();
                                             }
                                         });

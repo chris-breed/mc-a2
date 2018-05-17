@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -95,9 +96,14 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
         db.execSQL(dbController.insertScore(score, level + 1));
     }
 
-    public void gameOver(int score, int level) {
+    public void gameOver(int score, int level, boolean tweet) {
+        Toast score_display_toast =
+                Toast.makeText(this, String.format("Submitting score of %s to highscores", score), Toast.LENGTH_SHORT);
+        score_display_toast.show();
+
         insertScore(score, level);
-        tweeter(score);
+        if(tweet)
+            tweeter(score);
     }
 
     @Override
