@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -31,23 +32,14 @@ public class GamePlayFragment extends Fragment {
 
     private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private final int[] times = new int[]{120, 60, 30};
-    SoundController soundController;
+    MediaPlayer mediaPlayer;
     int music;
     private SharedPreferences sharedPreferences;
     private int pref_level;
     private OnFragmentInteractionListener mListener;
     private int[] newValues;
-    private Button playButton1;
-    private Button playButton2;
-    private Button playButton3;
-    private Button playButton4;
-    private Button playButton5;
-    private Button playButton6;
-    private Button playButton7;
-    private Button addition;
-    private Button subtraction;
-    private Button multiplication;
-    private Button division;
+    private Button playButton1, playButton2, playButton3, playButton4, playButton5, playButton6, playButton7;
+    private Button addition, subtraction, multiplication, division;
     private int currentTotal;
     private TextView totalText;
     private TextView text_score;
@@ -232,10 +224,13 @@ public class GamePlayFragment extends Fragment {
         }
         goalText.setText(String.valueOf(goalNumber));
 
-        soundController = new SoundController(getContext());
-        music = soundController.addSound(R.raw.thirtyseconds);
+//        soundController = new SoundController(Objects.requireNonNull(getActivity()).getApplicationContext());
+//        music = soundController.addSound(R.raw.thirtyseconds);
+//
+//        soundController.play(music);
 
-        soundController.play(music);
+        mediaPlayer = MediaPlayer.create (getContext(), R.raw.thirtyseconds);
+        mediaPlayer.start();
 
         // Timer
         final TextView text_timer = getView().findViewById(R.id.txt_timer);
@@ -250,18 +245,15 @@ public class GamePlayFragment extends Fragment {
                 Toast game_over_toast = Toast.makeText(getContext(), "Game Over!", Toast.LENGTH_SHORT);
                 game_over_toast.show();
 
-                soundController.stop(music);
-
+                mediaPlayer.stop();
 
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
                 alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
                                 ((MainActivity) Objects.requireNonNull(getActivity()))
                                         .gameOver(Integer.parseInt(text_score.getText().toString()), pref_level, true);
-
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -286,7 +278,7 @@ public class GamePlayFragment extends Fragment {
                 Log.i("Play", String.format("%s, %s", goalNumber, totalFinal));
 
                 int score = calcScore(totalFinal, goalNumber);
-                soundController.stop(music);
+                mediaPlayer.stop();
                 timer.cancel();
                 // Start new GameStartFragment
                 sharedPreferences.edit().putInt("score", score + previous_score).apply();
