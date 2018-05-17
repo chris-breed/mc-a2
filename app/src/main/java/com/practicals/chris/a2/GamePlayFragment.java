@@ -29,8 +29,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GamePlayFragment extends Fragment {
 
-    SharedPreferences sharedPreferences;
-    int pref_level;
+    private SharedPreferences sharedPreferences;
+    private int pref_level;
 
     private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
@@ -53,13 +53,12 @@ public class GamePlayFragment extends Fragment {
     private Button division;
 
     private int currentTotal;
-    private int currentNumber;
 
     private TextView totalText;
 
-    TextView text_score;
+    private TextView text_score;
 
-    CountDownTimer timer;
+    private CountDownTimer timer;
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -100,7 +99,7 @@ public class GamePlayFragment extends Fragment {
         pref_level = sharedPreferences.getInt("Level", 2);
 
         text_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_score);
-        text_score.setText(String.valueOf(getArguments().getInt("score")));
+        text_score.setText(String.valueOf(Objects.requireNonNull(getArguments()).getInt("score")));
 
         Log.i("Game", "GamePlayFragment created.");
 
@@ -279,11 +278,10 @@ public class GamePlayFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int goalFinal = goalNumber;
                 int totalFinal = Integer.parseInt(totalText.getText().toString());
-                Log.i("Play", String.format("%s, %s", goalFinal, totalFinal));
+                Log.i("Play", String.format("%s, %s", goalNumber, totalFinal));
 
-                int score = calcScore(totalFinal, goalFinal);
+                int score = calcScore(totalFinal, goalNumber);
 
                 timer.cancel();
                 // Start new GameStartFragment
@@ -306,7 +304,7 @@ public class GamePlayFragment extends Fragment {
 
     private void equate(int value, String currentOperand) {
         currentTotal = Integer.parseInt(totalText.getText().toString());
-        currentNumber = Integer.parseInt(totalText.getText().toString());
+        int currentNumber = Integer.parseInt(totalText.getText().toString());
         if (currentTotal == 0) {
             totalText.setText(String.valueOf(value));
         } else {

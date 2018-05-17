@@ -3,7 +3,6 @@ package com.practicals.chris.a2;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 class DBController extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "HighScores";
@@ -12,14 +11,17 @@ class DBController extends SQLiteOpenHelper {
     private static final String SCORE = "Score";
     private static final String DATETIME = "Datetime";
     private static final String LEVEL = "Difficulty";
+
     private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
             + " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + DATETIME + " DATETIME, "
             + SCORE + " INTEGER, "
             + LEVEL + " INTEGER);";
+
     private static final String SQL_INSERT_ENTRY =
             "INSERT INTO " + TABLE_NAME + " (" + DATETIME + ", " +
                     SCORE + ", " + LEVEL + ")" + " VALUES (datetime(), %s, %s);";
+
     private static final String SQL_DROP_TABLE =
             "DROP TABLE " + DBController.TABLE_NAME + ";";
 
@@ -39,12 +41,12 @@ class DBController extends SQLiteOpenHelper {
     }
 
     String createDB() {
-        Log.i("DB", SQL_CREATE_TABLE);
+//        Log.i("DB", SQL_CREATE_TABLE);
         return SQL_CREATE_TABLE;
     }
 
     String insertScore(int score, int level) {
-        Log.i("DB", String.format(SQL_INSERT_ENTRY, score, level));
+//        Log.i("DB", String.format(SQL_INSERT_ENTRY, score, level));
         return String.format(SQL_INSERT_ENTRY, score, level);
     }
 

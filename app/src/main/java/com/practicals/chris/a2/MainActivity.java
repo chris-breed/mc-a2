@@ -82,14 +82,14 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
 
     }
 
-    public void tweeter(int score) {
+    private void tweeter(int score) {
         TweetComposer.Builder tweet_builder = new TweetComposer.Builder(this)
                 .text(String.format("I achieved a score of %s on Countdown App!", score));
         tweet_builder.show();
 
     }
 
-    void insertScore(int score, int level) {
+    private void insertScore(int score, int level) {
         DBController dbController = new DBController(this);
         SQLiteDatabase db = dbController.getReadableDatabase();
 

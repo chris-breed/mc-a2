@@ -23,13 +23,13 @@ import java.util.Objects;
 
 public class HighscoresFragment extends Fragment {
 
-    private ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<>();
+    private final ArrayList<ArrayList<HighscoreRequestSQL>> all = new ArrayList<>();
     private ListView listViewHighScores;
     private OnFragmentInteractionListener mListener;
 
 
-    int position = 1; // Level 2
-    TextView viewingLevel;
+    private int position = 1; // Level 2
+    private TextView viewingLevel;
 
     private GestureDetectorCompat detector;
 

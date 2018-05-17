@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class GameStartFragment extends Fragment {
 
-    static int previous_score;
+    private static int previous_score;
 
     private final ArrayList<Integer> newValues = new ArrayList<>();
     private final int[] level_1_goal = new int[]{100, 500};
@@ -44,7 +44,7 @@ public class GameStartFragment extends Fragment {
     private ArrayList<TextView> numberTextViews;
     private OnFragmentInteractionListener mListener;
     private int goalNumber;
-    Button quit_button;
+    private Button quit_button;
 
 
     public GameStartFragment() {
