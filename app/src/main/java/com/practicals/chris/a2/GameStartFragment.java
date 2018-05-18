@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,6 +48,8 @@ public class GameStartFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private int goalNumber;
 
+    private SensorManager sensorManager;
+
 
     public GameStartFragment() {
         // Required empty public constructor
@@ -70,6 +76,18 @@ public class GameStartFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SensorEventListener sensorEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                shakeSelectRest();
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
 
         // Checking SharedPreferences
         final SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
@@ -205,7 +223,36 @@ public class GameStartFragment extends Fragment {
         }
     }
 
+    private void shakeSelectRest() {
+        Random rand = new Random();
+        boolean randomBool = rand.nextBoolean();
+
+        if (randomBool){ // Big numbers
+            addNewValue(getNewRandomNumber(bigMin, bigMax));
+        } else {    // Small numbers
+            addNewValue(getNewRandomNumber(smallMin, smallMax));
+        }
+    }
+
+    private int getNewRandomNumber(int min, int max) {
+        int number = 0;
+        while (number <= 0) {
+            Random rand = new Random();
+            number = rand.nextInt(max - min) + min;
+        }
+        return number;
+    }
+
     // Runs when the newValues ArrayList has 7 values.
+    private int getNewNumber(int min, int max) {
+        int number = 0;
+        while (number <= 0) {
+            Random rand = new Random();
+            number = rand.nextInt(max - min) + min;
+        }
+        return number;
+    }
+
     private void moreThanSeven() {
         int[] valuesToBePassed = new int[7];
         for (int i = 0; i < newValues.size(); i++) {
@@ -236,15 +283,6 @@ public class GameStartFragment extends Fragment {
                 GamePlayFragment.newInstance(goalAndValues));
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-    private int getNewNumber(int min, int max) {
-        int number = 0;
-        while (number <= 0) {
-            Random rand = new Random();
-            number = rand.nextInt(max - min) + min;
-        }
-        return number;
     }
 
     @Override
