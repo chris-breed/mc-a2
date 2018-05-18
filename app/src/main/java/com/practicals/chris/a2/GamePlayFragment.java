@@ -32,7 +32,7 @@ public class GamePlayFragment extends Fragment {
 
     private final ArrayList<Button> buttonArrayList = new ArrayList<>();
     private final int[] times = new int[]{120, 60, 30};
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
     int music;
     private SharedPreferences sharedPreferences;
     private int pref_level;
@@ -45,7 +45,7 @@ public class GamePlayFragment extends Fragment {
     private TextView text_score;
     private CountDownTimer timer;
 
-    int previous_score;
+    private int previous_score;
 
     public GamePlayFragment() {
         // Required empty public constructor
@@ -223,11 +223,6 @@ public class GamePlayFragment extends Fragment {
             buttonArrayList.get(i).setText(String.valueOf(Objects.requireNonNull(newValues)[i]));
         }
         goalText.setText(String.valueOf(goalNumber));
-
-//        soundController = new SoundController(Objects.requireNonNull(getActivity()).getApplicationContext());
-//        music = soundController.addSound(R.raw.thirtyseconds);
-//
-//        soundController.play(music);
 
         mediaPlayer = MediaPlayer.create(getContext(), R.raw.thirtyseconds);
         mediaPlayer.start();

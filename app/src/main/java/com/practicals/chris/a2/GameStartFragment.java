@@ -49,12 +49,12 @@ public class GameStartFragment extends Fragment {
     private int goalNumber;
 
     private SensorManager sensorManager;
-    SensorEventListener shakeListener;
+    private SensorEventListener shakeListener;
     private float mAccel;
     private float mAccelCurrent;
     private float mAccelLast;
 
-    Boolean shook;
+    private Boolean shook;
 
 
     public GameStartFragment() {
@@ -62,9 +62,8 @@ public class GameStartFragment extends Fragment {
     }
 
     public static GameStartFragment newInstance() {
-        GameStartFragment fragment = new GameStartFragment();
 
-        return fragment;
+        return new GameStartFragment();
     }
 
     @Override
@@ -93,6 +92,7 @@ public class GameStartFragment extends Fragment {
                 mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
                 float delta = mAccelCurrent - mAccelLast;
                 mAccel = mAccel * 0.9f + delta; // perform low-cut filte
+
                 if (mAccel > 10) {
                     shakeSelectRest();
                 }
@@ -105,7 +105,7 @@ public class GameStartFragment extends Fragment {
         };
 
         sensorManager = (SensorManager) Objects.requireNonNull(getContext()).getSystemService(Context.SENSOR_SERVICE);
-        sensorManager.registerListener(shakeListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(shakeListener, Objects.requireNonNull(sensorManager).getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         // Checking SharedPreferences
         final SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
