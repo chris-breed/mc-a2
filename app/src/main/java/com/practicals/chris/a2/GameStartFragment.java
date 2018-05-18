@@ -93,7 +93,7 @@ public class GameStartFragment extends Fragment {
                 float delta = mAccelCurrent - mAccelLast;
                 mAccel = mAccel * 0.9f + delta; // perform low-cut filte
 
-                if (mAccel > 10) {
+                if (mAccel > 12) {
                     shakeSelectRest();
                 }
             }
