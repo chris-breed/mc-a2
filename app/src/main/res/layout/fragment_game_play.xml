@@ -56,28 +56,32 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_2"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_3"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_4"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -91,21 +95,24 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_6"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_7"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/default_value" />
+            android:text="@string/default_value"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
@@ -125,28 +132,32 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/button_text_addition" />
+            android:text="@string/button_text_addition"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_subtraction"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/button_text_subtraction" />
+            android:text="@string/button_text_subtraction"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_multiply"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/button_text_multiplication" />
+            android:text="@string/button_text_multiplication"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/play_button_division"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:text="@string/button_text_division" />
+            android:text="@string/button_text_division"
+            android:textSize="24sp" />
 
 
     </LinearLayout>

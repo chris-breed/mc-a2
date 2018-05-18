@@ -54,7 +54,7 @@ public class MainActivity extends FragmentActivity implements SettingsFragment.O
                 .getSharedPreferences("CountdownPrefs", MODE_PRIVATE);
 
         if (isFirstTime()) {
-            startActivity(new Intent(MainActivity.this, Popup.class));
+            startActivity(new Intent(MainActivity.this, InstructionsPopup.class));
         }
 
         DBController dbController = new DBController(getApplicationContext());

@@ -102,7 +102,7 @@ public class SettingsFragment extends Fragment {
         btn_instructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), Popup.class));
+                startActivity(new Intent(getContext(), InstructionsPopup.class));
             }
         });
 
