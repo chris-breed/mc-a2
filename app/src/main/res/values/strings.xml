@@ -36,5 +36,11 @@
     <string name="level">Level</string>
     <string name="instructions">Instructions</string>
     <string name="viewing_highscore_level">Viewing Level:</string>
+    <string name="instructions_1">Like the TV show, Countdown, the aim of the game is to get as close to the goal number as possible.</string>
+    <string name="instructions_2">Starting the game, you must select 7 numbers to start with. The two buttons Big Number and Small Number will generate an appropriate number.</string>
+    <string name="instructions_3">You earn points by getting as close to the goal number as you can, within the time limit.</string>
+    <string name="instructions_4">You can shake the device to randomly select the remaining big/small numbers.</string>
+    <string name="instructions_5">On the highscores tab, you can select which highscore you are viewing by swiping to the lext and to the right.</string>
+    <string name="instructions_6">The settings tab contains options to change the difficulty of the game, clear your phones local database of any previous highscores and you can view these instructions at any time.</string>
 
 </resources>

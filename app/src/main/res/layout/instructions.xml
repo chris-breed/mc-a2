@@ -25,7 +25,7 @@
         android:paddingBottom="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:text='Like the TV show, "Countdown",\nthe aim of the game is to get as close to the goal number as possible.'
+        android:text="@string/instructions_1"
         android:textAlignment="center" />
 
     <TextView
@@ -34,7 +34,7 @@
         android:paddingBottom="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:text="Starting the game, you must select 7 numbers to start with.\nThe two buttons Big Number and Small Number will generate an appropriate number."
+        android:text="@string/instructions_2"
         android:textAlignment="center" />
 
     <TextView
@@ -43,6 +43,33 @@
         android:paddingBottom="3dp"
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
-        android:text="You earn points by getting as close to the goal number as you can, within the time limit."
+        android:text="@string/instructions_3"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/instructions_4"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/instructions_5"
+        android:textAlignment="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:text="@string/instructions_6"
         android:textAlignment="center" />
 </LinearLayout>

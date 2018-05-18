@@ -170,7 +170,7 @@ public class GameStartFragment extends Fragment {
                 } else {
                     sharedPreferences.edit().putInt("score", 0).apply();
                     Fragment gameStartFragment = new GameStartFragment();
-                    ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
+                    ((MainActivity) Objects.requireNonNull(getActivity())).replaceFragment(gameStartFragment);
                 }
             }
         });
