@@ -229,7 +229,7 @@ public class GamePlayFragment extends Fragment {
 //
 //        soundController.play(music);
 
-        mediaPlayer = MediaPlayer.create (getContext(), R.raw.thirtyseconds);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.thirtyseconds);
         mediaPlayer.start();
 
         // Timer
@@ -266,7 +266,7 @@ public class GamePlayFragment extends Fragment {
                 AlertDialog alert = alertBuilder.create();
                 alert.show();
 
-
+                timer.cancel();
             }
         }.start();
 
@@ -291,6 +291,7 @@ public class GamePlayFragment extends Fragment {
     public void onStop() {
         super.onStop();
         mediaPlayer.stop();
+        timer.cancel();
     }
 
     private void startNewStartFragment() {
