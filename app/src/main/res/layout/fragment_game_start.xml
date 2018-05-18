@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".GameStartFragment">
 
@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/default_value"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="30sp" />
 
     <View
@@ -42,6 +43,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -51,6 +53,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -60,6 +63,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -69,6 +73,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -78,6 +83,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -87,6 +93,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
 
             <TextView
@@ -96,6 +103,7 @@
                 android:layout_weight="1"
                 android:text="@string/default_value"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -132,6 +140,7 @@
         android:layout_height="wrap_content"
         android:text="Current Score"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="30sp" />
 
     <TextView
@@ -140,6 +149,7 @@
         android:layout_height="wrap_content"
         android:text="0"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:textSize="36sp" />
 
     <Button

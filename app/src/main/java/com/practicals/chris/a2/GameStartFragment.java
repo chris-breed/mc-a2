@@ -115,57 +115,63 @@ public class GameStartFragment extends Fragment {
 
         Log.i("Game", "GameStartFragment created.");
 
-        TextView prev_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_current_total_score);
+        final TextView prev_score = Objects.requireNonNull(getView()).findViewById(R.id.txt_current_total_score);
         prev_score.setText(String.valueOf(previous_score));
 
         Button quit_button = getView().findViewById(R.id.btn_quit);
         quit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                alertBuilder.setMessage("Are you sure you want to quit?\nYou're current score will be submitted.")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
-                                alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
-                                        .setCancelable(false)
-                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
+                if (!(Integer.parseInt(prev_score.getText().toString()) == 0)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                    alertBuilder.setMessage("Are you sure you want to quit?\nYou're current score will be submitted.")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getContext());
+                                    alertBuilder.setMessage("Do you want to send out a Tweet with your score?")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
 
-                                                ((MainActivity) Objects.requireNonNull(getActivity()))
-                                                        .gameOver(previous_score, pref_level, true);
+                                                    ((MainActivity) Objects.requireNonNull(getActivity()))
+                                                            .gameOver(previous_score, pref_level, true);
 
-                                                sharedPreferences.edit().putInt("score", 0).apply();
-                                                Fragment gameStartFragment = new GameStartFragment();
-                                                ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
-                                            }
-                                        })
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                ((MainActivity) Objects.requireNonNull(getActivity()))
-                                                        .gameOver(previous_score, pref_level, false);
+                                                    sharedPreferences.edit().putInt("score", 0).apply();
+                                                    Fragment gameStartFragment = new GameStartFragment();
+                                                    ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    ((MainActivity) Objects.requireNonNull(getActivity()))
+                                                            .gameOver(previous_score, pref_level, false);
 
-                                                sharedPreferences.edit().putInt("score", 0).apply();
-                                                Fragment gameStartFragment = new GameStartFragment();
-                                                ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
+                                                    sharedPreferences.edit().putInt("score", 0).apply();
+                                                    Fragment gameStartFragment = new GameStartFragment();
+                                                    ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
 
-                                                dialog.cancel();
-                                            }
-                                        });
-                                AlertDialog alert = alertBuilder.create();
-                                alert.show();
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                    AlertDialog alert = alertBuilder.create();
+                                    alert.show();
 
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
 
-                AlertDialog alert = alertBuilder.create();
-                alert.show();
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+                } else {
+                    sharedPreferences.edit().putInt("score", 0).apply();
+                    Fragment gameStartFragment = new GameStartFragment();
+                    ((MainActivity) getActivity()).replaceFragment(gameStartFragment);
+                }
             }
         });
         if ((previous_score == 0)) {
