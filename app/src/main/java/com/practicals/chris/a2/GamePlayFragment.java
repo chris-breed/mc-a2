@@ -237,7 +237,8 @@ public class GamePlayFragment extends Fragment {
         timer = new CountDownTimer(times[pref_level] * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                text_timer.setText(String.valueOf(millisUntilFinished).substring(0, String.valueOf(millisUntilFinished).length() - 3));
+                String timer_set = String.valueOf(millisUntilFinished).substring(0, String.valueOf(millisUntilFinished).length() - 3);
+                text_timer.setText(String.format("%ss", timer_set));
             }
 
             @Override
