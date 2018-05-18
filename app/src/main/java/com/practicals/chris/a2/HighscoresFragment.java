@@ -161,9 +161,11 @@ public class HighscoresFragment extends Fragment {
     }
 
     private void swapHighScore(int level) {
-        HighscoreResultAdapter adapter = new HighscoreResultAdapter(getContext(), all.get(level));
-        listViewHighScores.setAdapter(adapter);
-        viewingLevel.setText(String.format("%s %s", getString(R.string.viewing_highscore_level), String.valueOf(position + 1)));
+        if (level >= 0 && level <= 2) {
+            HighscoreResultAdapter adapter = new HighscoreResultAdapter(getContext(), all.get(level));
+            listViewHighScores.setAdapter(adapter);
+            viewingLevel.setText(String.format("%s %s", getString(R.string.viewing_highscore_level), String.valueOf(position + 1)));
+        }
     }
 
     @Override
