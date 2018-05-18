@@ -241,8 +241,10 @@ public class GameStartFragment extends Fragment {
             while (count < 7) {
                 if (randomNumberBig) { // Big numbers
                     addNewValue(getNewRandomNumber(bigMin, bigMax));
+                    randomNumberBig = rand.nextBoolean();
                 } else {    // Small numbers
                     addNewValue(getNewRandomNumber(smallMin, smallMax));
+                    randomNumberBig = rand.nextBoolean();
                 }
                 shook = true;
                 sensorManager.unregisterListener(shakeListener);
