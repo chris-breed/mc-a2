@@ -49,6 +49,12 @@ public class GameStartFragment extends Fragment {
     private int goalNumber;
 
     private SensorManager sensorManager;
+    SensorEventListener shakeListener;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
+
+    Boolean shook;
 
 
     public GameStartFragment() {
@@ -77,10 +83,19 @@ public class GameStartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SensorEventListener sensorEventListener = new SensorEventListener() {
+        shakeListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
-                shakeSelectRest();
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                mAccelLast = mAccelCurrent;
+                mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+                float delta = mAccelCurrent - mAccelLast;
+                mAccel = mAccel * 0.9f + delta; // perform low-cut filte
+                if (mAccel > 10) {
+                    shakeSelectRest();
+                }
             }
 
             @Override
@@ -88,6 +103,9 @@ public class GameStartFragment extends Fragment {
 
             }
         };
+
+        sensorManager = (SensorManager) Objects.requireNonNull(getContext()).getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(shakeListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         // Checking SharedPreferences
         final SharedPreferences sharedPreferences = Objects.requireNonNull(getContext())
@@ -210,6 +228,26 @@ public class GameStartFragment extends Fragment {
         Random rand = new Random();
         goalNumber = rand.nextInt((max - min) + 1) + min;
         goalText.setText(String.valueOf(goalNumber));
+
+        shook = false;
+    }
+
+    private void shakeSelectRest() {
+        Log.i("Shake", "Phone Shook.");
+        Random rand = new Random();
+        boolean randomNumberBig = rand.nextBoolean();
+
+        if (!shook) {
+            while (count < 7) {
+                if (randomNumberBig) { // Big numbers
+                    addNewValue(getNewRandomNumber(bigMin, bigMax));
+                } else {    // Small numbers
+                    addNewValue(getNewRandomNumber(smallMin, smallMax));
+                }
+                shook = true;
+                sensorManager.unregisterListener(shakeListener);
+            }
+        }
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
@@ -220,17 +258,6 @@ public class GameStartFragment extends Fragment {
 
         if (count >= 7) {
             moreThanSeven();
-        }
-    }
-
-    private void shakeSelectRest() {
-        Random rand = new Random();
-        boolean randomBool = rand.nextBoolean();
-
-        if (randomBool){ // Big numbers
-            addNewValue(getNewRandomNumber(bigMin, bigMax));
-        } else {    // Small numbers
-            addNewValue(getNewRandomNumber(smallMin, smallMax));
         }
     }
 
@@ -294,6 +321,12 @@ public class GameStartFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(shakeListener);
     }
 
     @Override
