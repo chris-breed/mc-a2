@@ -37,7 +37,6 @@ public class HighscoresFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static HighscoresFragment newInstance() {
         HighscoresFragment fragment = new HighscoresFragment();
         Bundle args = new Bundle();
@@ -186,7 +185,6 @@ public class HighscoresFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
